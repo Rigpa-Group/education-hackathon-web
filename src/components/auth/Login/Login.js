@@ -51,8 +51,8 @@ export const Login = () => {
       <Grid container>
         <Grid item lg={12} xs={12} align="center">
           <Paper className="paper">
-            <Typography variant="h5" className="mb-5 logo-text">
-              EventBhutan
+            <Typography variant="h5" color={'primary'} className="mb-5">
+              EduTech
             </Typography>
             <Formik initialValues={{login: '', password: ''}} onSubmit={onLogin} validationSchema={signInValidation}>
               {({
@@ -66,10 +66,10 @@ export const Login = () => {
                 }) => (
                 <Form>
                   <Field component={TextField} name="login" label="Email Address/Username" type="email"
-                         variant="outlined" fullWidth required/>
+                         variant="outlined" fullWidth required style={{marginTop: 20}}/>
                   <Field component={TextField} name="password" label="Password" variant="outlined" required
-                         fullWidth type="password" className="mt-3"/>
-                  <Button variant="contained" className="login-btn" type="submit" disabled={!dirty || isSubmitting}>
+                         fullWidth type="password" style={{marginTop: 20}}/>
+                  <Button variant="contained" color="primary" className="login-btn" type="submit" disabled={!dirty || isSubmitting}>
                     Login
                   </Button>
                   <Button variant="contained" className="btn-redirect" onClick={() => history.push('/sign-up')}>
@@ -79,7 +79,7 @@ export const Login = () => {
               )}
             </Formik>
             <Link to="/" className="back-text">
-              <Typography className="mt-4">
+              <Typography color={'primary'} style={{marginTop: 30, textDecoration: 'none'}}>
                 Back to Home
               </Typography>
             </Link>

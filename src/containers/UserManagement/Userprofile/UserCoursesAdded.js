@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const UserEventCreated = () => {
+export const UserCoursesAdded = () => {
   const classes = useStyles();
 
   return (

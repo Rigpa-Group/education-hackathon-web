@@ -1,13 +1,14 @@
 import {Login} from '../components/auth/Login/Login';
 import UserManagement from '../containers/UserManagement/UserManagement';
 import {UserProfile} from '../containers/UserManagement/Userprofile/UserProfile';
+import {Dashboard} from '../containers/Dashboard/Dashboard';
 
 export const protectedRoutes = [
   {
     title: 'Dashboard',
     path: '/dashboard',
     authorized: ['Admin'],
-    component: Login,
+    component: Dashboard,
     visible: 'false',
   },
   {

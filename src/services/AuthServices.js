@@ -6,9 +6,9 @@ export const login = (payload, dispatch) => {
     if (response.data) {
       const token = response.headers['authorization'];
       const storage = localStorage;
-      storage.setItem('user', JSON.stringify(response.data));
+      storage.setItem('user', JSON.stringify(response.data.user));
       storage.setItem('token', JSON.stringify(token));
-      dispatch({type: 'LOGIN', payload: response.data});
+      dispatch({type: 'LOGIN', payload: response.data.user});
     }
     return response.data;
   });
@@ -18,9 +18,9 @@ export const emailConfirmation = (payload, dispatch) => {
   return baseApi(`/users/confirmation`, 'get', payload).then((response) => {
     const token = response.headers['authorization'];
     const storage = localStorage;
-    storage.setItem('user', JSON.stringify(response.data));
+    storage.setItem('user', JSON.stringify(response.data.user));
     storage.setItem('token', JSON.stringify(token));
-    dispatch({type: 'LOGIN', payload: response.data});
+    dispatch({type: 'LOGIN', payload: response.data.user});
     return response.data;
   });
 };

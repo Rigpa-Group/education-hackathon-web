@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useReducer} from 'react';
 import useCombinedReducers from 'use-combined-reducers';
 import {SnackbarProvider} from 'notistack';
 import {ThemeProvider} from '@material-ui/core/styles';
@@ -12,16 +12,12 @@ import SignUp from './components/auth/SignUp/SignUp';
 import EmailConfirmation from './components/auth/UserVarification/EmailConfirmation';
 import {protectedRoutes} from './routes/ProctectedRoute';
 import {ProtectedNavigator} from './routes/ProtedNavigator';
-// import ForbiddenPage from './shared/components/ErrorPage/ForbiddenPage';
-// import NotFound from './shared/components/PageNotFound/PageNotFound';
-// import {landingRoutes} from './routes/Routes';
-// import {LandingNavigator} from './routes/LandingNavigator';
 import {theme} from './Theme';
+import {initialUser, userReducer} from './reducers';
 
 function App() {
   const [state, dispatch] = useCombinedReducers({
-    // user: useReducer(userReducer, initialUser),
-    // statistics: useReducer(statisticsReducer, {}),
+    user: useReducer(userReducer, initialUser),
   });
 
   ApiUtils.dispatch = dispatch;

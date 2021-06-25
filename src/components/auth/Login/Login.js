@@ -9,24 +9,24 @@ import {Link, useHistory} from 'react-router-dom';
 import {useSnackbar} from 'notistack';
 import {Notify, setProps} from '../../../shared/components/notification/Notification';
 import {login} from '../../../services/AuthServices';
-import {DispatchContext} from '../../../store';
+import {DispatchContext, StateContext} from '../../../store';
 import {signInValidation} from '../AuthValidationSchema';
 
 export const Login = () => {
   const history = useHistory();
   const snackbar = useSnackbar();
   const dispatch = useContext(DispatchContext);
-  // const {user} = useContext(StateContext);
+  const {user} = useContext(StateContext);
 
   useEffect(() => {
     setProps(snackbar);
-    // if (user?.authenticated) {
-    //   if(roles?.attributes?.name === 'Admin'){
-    //     history.push('/dashboard');
-    //   }else {
-    //     history.push('/');
-    //   }
-    // }
+    if (user?.authenticated) {
+      if (user?.role_ids?.[0]?.name === 'Admin') {
+        history.push('/dashboard');
+      } else {
+        history.push('/');
+      }
+    }
   }, []);
 
   const onLogin = (values, {setSubmitting}) => {

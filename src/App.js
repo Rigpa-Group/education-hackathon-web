@@ -10,8 +10,8 @@ import {createBrowserHistory} from 'history';
 import {Login} from './components/auth/Login/Login';
 import SignUp from './components/auth/SignUp/SignUp';
 import EmailConfirmation from './components/auth/UserVarification/EmailConfirmation';
-// import {protectedRoutes} from './routes/ProctectedRoute';
-// import {ProtectedNavigator} from './routes/ProtedNavigator';
+import {protectedRoutes} from './routes/ProctectedRoute';
+import {ProtectedNavigator} from './routes/ProtedNavigator';
 // import ForbiddenPage from './shared/components/ErrorPage/ForbiddenPage';
 // import NotFound from './shared/components/PageNotFound/PageNotFound';
 // import {landingRoutes} from './routes/Routes';
@@ -39,12 +39,12 @@ function App() {
                     landingRoutes.map((nav, index) => (
                       <LandingNavigator {...nav} key={index} path={nav.path}
                                         component={nav.component} exact/>))
-                  }
+                  }*/}
                   {
                     protectedRoutes.map((nav, index) => (
                       <ProtectedNavigator {...nav} key={index} path={nav.path}
                                           component={nav.component} exact/>))
-                  }*/}
+                  }
                   <Route path="/" component={Login} exact/>
                   <Route path="/login" component={Login} exact/>
                   <Route path="/sign-up" component={SignUp} exact/>

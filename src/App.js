@@ -17,6 +17,12 @@ import EmailConfirmation from './components/auth/UserVarification/EmailConfirmat
 // import {landingRoutes} from './routes/Routes';
 // import {LandingNavigator} from './routes/LandingNavigator';
 import {theme} from './Theme';
+import Header from './views/landing/header/Header';
+import Banner from './views/landing/banner/Banner';
+import FirstStripe from './views/landing/firstStripe-landing/FirstStripe';
+import CourseTab from './views/landing/course-category/course-tab/CourseTab';
+import SecondStripe from './views/landing/secondStripe-landing/SecondStripe';
+import ViewAll from './views/landing/view-all/ViewAll';
 
 function App() {
   const [state, dispatch] = useCombinedReducers({
@@ -34,6 +40,12 @@ function App() {
           <ThemeProvider theme={theme}>
             <SnackbarProvider maxSnack={2}>
               <Router history={history}>
+                <Header/>
+                <Banner/>
+                <FirstStripe/>
+                <CourseTab/>
+                <SecondStripe/>
+                <ViewAll/>
                 <Switch>
                   {/*{
                     landingRoutes.map((nav, index) => (

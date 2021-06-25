@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Grid, makeStyles, Paper, Typography} from '@material-ui/core';
-import {UserEventCreated} from './UserEventCreated';
+import {UserCoursesAdded} from './UserCoursesAdded';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import {useHistory} from 'react-router-dom';
@@ -85,7 +85,7 @@ export const UserProfile = () => {
       </Grid>
       <Grid item lg={7} xs={12}>
         <Typography style={{fontWeight: 700, textAlign: 'center', marginBottom: 10}}>Courses Created</Typography>
-        <UserEventCreated/>
+        <UserCoursesAdded/>
       </Grid>
     </Grid>
   );

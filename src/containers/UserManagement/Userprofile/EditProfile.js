@@ -9,15 +9,12 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import {Field, Form, Formik} from 'formik';
 import {useSnackbar} from 'notistack';
-import {usersApi} from '../../../../services/UserServices';
-import {DispatchContext} from '../../../../store';
-import {Notify, setProps} from '../../../../shared/components/notification/Notification';
 import Grid from '@material-ui/core/Grid';
 import {TextField} from 'formik-material-ui';
 import Button from '@material-ui/core/Button';
-import DateFnsUtils from '@date-io/date-fns';
-import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
-import {fetchIncludedObject} from '../../../../shared/functions/IncludedBinding';
+import {DispatchContext} from '../../../store';
+import {Notify, setProps} from '../../../shared/components/notification/Notification';
+import {usersApi} from '../../../services/UserServices';
 
 const styles = theme => ({
   root: {
@@ -68,13 +65,12 @@ const DialogActions = withStyles(theme => ({
 
 
 function EditProfile(props) {
-  const {handleClose, open, editUser, relations} = props;
+  const {handleClose, open, editUser} = props;
   const dispatch = useContext(DispatchContext);
   const [edit, setEdit] = useState();
   const snackbar = useSnackbar();
   const [userProfile] = useState({
-    ...editUser?.data?.attributes,
-    profile_attributes: fetchIncludedObject(relations, editUser?.included)?.attributes,
+    ...editUser?.user
   });
 
   useEffect(() => {
@@ -130,19 +126,6 @@ function EditProfile(props) {
                   <Grid item lg={6} xs={12}>
                     <Field component={TextField} name="email" margin="dense" label="Email" type="email"
                            variant="outlined" fullWidth required/>
-                  </Grid>
-                  <Grid item lg={6} xs={12}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <Field component={KeyboardDatePicker} name="profile_attributes.dob" label="Date of Birth"
-                             inputVariant="outlined" fullWidth className="mt-3" variant="inline"
-                             helperText={errors?.profile_attributes?.dob} format="dd/MM/yyyy" autoOk disableFuture
-                             value={values?.profile_attributes?.dob} error={Boolean(errors?.profile_attributes?.dob)}
-                             initialFocusedDate={new Date()}
-                             onChange={date => {
-                               formik.setFieldValue('profile_attributes.dob', date, false);
-                             }}
-                             KeyboardButtonProps={{'aria-label': 'change date'}}/>
-                    </MuiPickersUtilsProvider>
                   </Grid>
                 </Grid>
                 <DialogActions>

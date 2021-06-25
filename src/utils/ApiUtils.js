@@ -1,7 +1,7 @@
 import axios from 'axios';
 import config from './Config';
 import {createBrowserHistory} from 'history';
-// import {logout} from '../services/AuthServices';
+import {logout} from '../services/AuthServices';
 
 const history = createBrowserHistory();
 axios.defaults.baseURL = config.API_URL;
@@ -36,9 +36,9 @@ ApiUtils.axios.interceptors.response.use(function (response) {
   if (401 === error.response.status) {
     sessionStorage.clear();
     localStorage.clear();
-    // logout(ApiUtils.dispatch).then(res => {
-    //   history.push('/login');
-    // });
+    logout(ApiUtils.dispatch).then(res => {
+      history.push('/login');
+    });
   }
   let message = error?.response?.data?.error || error?.response?.data?.errors.join(', ');
   return Promise.reject(message);

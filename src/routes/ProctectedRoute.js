@@ -1,5 +1,6 @@
 import {Login} from '../components/auth/Login/Login';
 import UserManagement from '../containers/UserManagement/UserManagement';
+import {UserProfile} from '../containers/UserManagement/Userprofile/UserProfile';
 
 export const protectedRoutes = [
   {
@@ -14,6 +15,13 @@ export const protectedRoutes = [
     path: '/users',
     authorized: ['Admin'],
     component: UserManagement,
+    visible: 'false',
+  },
+  {
+    title: 'User Profile',
+    path: '/profile',
+    authorized: ['Admin'],
+    component: UserProfile,
     visible: 'false',
   },
 ];

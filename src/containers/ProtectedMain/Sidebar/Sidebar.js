@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {Divider, Drawer, makeStyles} from '@material-ui/core';
 import SidebarNav from './components/SidebarNav/SidebarNav';
 import Typography from '@material-ui/core/Typography';
 import {pages} from './SideBarPages';
+import {StateContext} from '../../../store';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -28,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 const Sidebar = props => {
   const {open, variant, onClose, className, children, ...rest} = props;
   const classes = useStyles();
+  const {user} = useContext(StateContext);
 
   return (
     <Drawer
@@ -44,7 +46,7 @@ const Sidebar = props => {
         <img src={require('../../../assets/images/default.png').default}
              style={{width: 80, height: 80, borderRadius: 50, alignSelf: 'center'}} alt=""/>
         <Typography style={{textAlign: 'center'}} className="mt-3 text-capitalize">
-          Zala Kinga Wangchuk
+          {user?.profile_attributes?.first_name || 'Education'} {user?.profile_attributes?.last_name ?? 'User'}
         </Typography>
         <Divider className={classes.divider}/>
         <SidebarNav

@@ -69,7 +69,7 @@ export const ListUser = ({role}) => {
           </TableHead>
           <TableBody>
             {users.length > 0  && users?.map((user, index) => (
-            <TableRow hover={true} key={index} className="hand-cursor">
+            <TableRow hover={true} key={index} className="hand-cursor" onClick={() => viewProfile(user?.id)}>
               <TableCell className={classes.tableBody}>{index+1}</TableCell>
               <TableCell className={classes.tableBody} style={{textTransform: 'capitalize'}}>
                 {user?.profile_attributes?.first_name} {' '} {user?.profile_attributes?.last_name}</TableCell>

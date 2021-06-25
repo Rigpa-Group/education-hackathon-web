@@ -1,10 +1,14 @@
-import React, {useState} from 'react';
-import {Grid, makeStyles, Paper, Typography} from '@material-ui/core';
+import React, {useContext, useEffect, useState} from 'react';
+import {Grid, makeStyles, Paper, Typography, useTheme} from '@material-ui/core';
 import {UserCoursesAdded} from './UserCoursesAdded';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
-import {useHistory} from 'react-router-dom';
-import {useTheme} from '@material-ui/core';
+import {useHistory, useParams} from 'react-router-dom';
+import {StateContext} from '../../../store';
+import {useSnackbar} from 'notistack';
+import {Notify, setProps} from '../../../shared/components/notification/Notification';
+import {usersAction} from '../../../services/UserServices';
+import EditProfile from './EditProfile';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -45,13 +49,32 @@ export const UserProfile = () => {
   const history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
+  const params = useParams();
   const [open, setOpen] = useState(false);
+  const {user} = useContext(StateContext);
+  const [profile, setProfile] = useState(user);
+  const snackbar = useSnackbar();
+
+  useEffect(() => {
+    setProps(snackbar);
+    if (params?.id) {
+      fetchUserDetail();
+    }
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const fetchUserDetail = () => {
+    usersAction('get', params?.id).then(response => {
+      setProfile(response.user);
+    }).catch(err => {
+      Notify(err, 'error');
+    });
   };
 
   return (
@@ -64,25 +87,28 @@ export const UserProfile = () => {
             </Grid>
             <Grid item lg={5} xs={6}>
               <Typography className={classes.name}>
-                Name
+                {profile?.profile_attributes?.first_name} {' '} {profile?.profile_attributes?.last_name}
               </Typography>
               <Typography className={classes.detail}>
-                12345678
+                {profile?.phone}
               </Typography>
               <Typography className={classes.detail}>
-                <a href='mailto: kinga@gmail.com' target="_blank" rel="noreferrer noopener">
-                  dawa@gmail.com
+                <a href="mailto: kinga@gmail.com" target="_blank" rel="noreferrer noopener">
+                  {profile?.email}
                 </a>
               </Typography>
             </Grid>
           </Grid>
+          {!params?.id &&
           <Grid item lg={12} xs={12} align="right">
             <IconButton style={{backgroundColor: theme.primary}}>
               <EditIcon style={{color: 'white'}} onClick={() => handleClickOpen()}/>
             </IconButton>
           </Grid>
+          }
         </Paper>
       </Grid>
+      <EditProfile handleClose={handleClose} open={open} editUser={profile}/>
       <Grid item lg={7} xs={12}>
         <Typography style={{fontWeight: 700, textAlign: 'center', marginBottom: 10}}>Courses Created</Typography>
         <UserCoursesAdded/>

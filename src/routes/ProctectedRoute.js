@@ -25,4 +25,11 @@ export const protectedRoutes = [
     component: UserProfile,
     visible: 'false',
   },
+  {
+    title: 'User Profile',
+    path: '/profile/:id',
+    authorized: ['Admin'],
+    component: UserProfile,
+    visible: 'false',
+  },
 ];

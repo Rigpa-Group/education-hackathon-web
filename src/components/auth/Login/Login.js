@@ -9,7 +9,7 @@ import {Link, useHistory} from 'react-router-dom';
 import {useSnackbar} from 'notistack';
 import {Notify, setProps} from '../../../shared/components/notification/Notification';
 import {login} from '../../../services/AuthServices';
-import {DispatchContext, StateContext} from '../../../store';
+import {DispatchContext} from '../../../store';
 import {signInValidation} from '../AuthValidationSchema';
 
 export const Login = () => {
@@ -17,8 +17,6 @@ export const Login = () => {
   const snackbar = useSnackbar();
   const dispatch = useContext(DispatchContext);
   // const {user} = useContext(StateContext);
-  // const dataList = user?.data?.relationships?.roles?.data;
-  // const roles = fetchIncludedObjectList(dataList, user?.included);
 
   useEffect(() => {
     setProps(snackbar);
@@ -34,15 +32,15 @@ export const Login = () => {
   const onLogin = (values, {setSubmitting}) => {
     login({user: {...values}}, dispatch).then(response => {
       setSubmitting(false);
-      // if(roles?.attributes?.name === 'Admin') {
-      //   history.push('/dashboard');
-      // }else{
-      //   history.push('/');
-      // }
-      // Notify('Login successfully', 'success');
+      if (response?.user?.role_ids?.[0]?.name === 'Admin') {
+        history.push('/dashboard');
+      } else {
+        history.push('/');
+      }
+      Notify('Login successfully', 'success');
     }).catch(err => {
       setSubmitting(false);
-      // Notify(err, 'error');
+      Notify(err, 'error');
     });
   };
 
@@ -69,7 +67,8 @@ export const Login = () => {
                          variant="outlined" fullWidth required style={{marginTop: 20}}/>
                   <Field component={TextField} name="password" label="Password" variant="outlined" required
                          fullWidth type="password" style={{marginTop: 20}}/>
-                  <Button variant="contained" color="primary" className="login-btn" type="submit" disabled={!dirty || isSubmitting}>
+                  <Button variant="contained" color="primary" className="login-btn" type="submit"
+                          disabled={!dirty || isSubmitting}>
                     Login
                   </Button>
                   <Button variant="contained" className="btn-redirect" onClick={() => history.push('/sign-up')}>

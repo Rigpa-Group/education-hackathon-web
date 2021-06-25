@@ -13,18 +13,18 @@ import {useSnackbar} from 'notistack';
 import {signUpValidation} from '../AuthValidationSchema';
 import IconButton from '@material-ui/core/IconButton';
 import {Visibility, VisibilityOff} from '@material-ui/icons';
-import useTheme from '@material-ui/core/styles/useTheme';
+import {Autocomplete} from '@material-ui/lab';
+import {gender} from '../../../shared/functions/SharedModels';
 
 export default function SignUp() {
   const history = useHistory();
-  const colors = useTheme();
   const snackbar = useSnackbar();
   setProps(snackbar);
   const [passwordValues, setPasswordValues] = React.useState({showPassword: false, showCpassword: false,});
   const initialValues = {
     email: '',
     phone: '',
-    profile_attributes: {first_name: '', last_name: '', gender: '', dob: null},
+    profile_attributes: {first_name: '', last_name: '', gender: ''},
     password: '',
     role_ids: [2]
   };
@@ -70,7 +70,7 @@ export default function SignUp() {
                   handleChange,
                   ...formik
                 }) => (
-                <Form>
+                <Form onSubmit={formik.handleSubmit}>
                   <Field component={TextField} name="profile_attributes.first_name" label="First Name" type="text"
                          variant="outlined" required fullWidth/>
                   <Field component={TextField} name="profile_attributes.last_name" label="Last Name" type="text"
@@ -79,6 +79,15 @@ export default function SignUp() {
                          required style={{marginTop: 15}}/>
                   <Field component={TextField} name="email" label="Email" type="email" variant="outlined" fullWidth
                          required style={{marginTop: 15}}/>
+                  <Autocomplete
+                    id="combo-box-demo"
+                    options={gender}
+                    getOptionLabel={(option) => option.title}
+                    onChange={(e, value) => formik.setFieldValue('profile_attributes.gender', value?.value)}
+                    style={{width: '100%', marginTop: 15}}
+                    renderInput={(params) => <Field component={TextField} name="profile_attributes.gender"
+                                                    {...params} label="Gender" required variant="outlined"/>}
+                  />
                   <Field component={TextField} name="password" label="Password" variant="outlined" required
                          type={passwordValues.showPassword ? 'text' : 'password'} fullWidth
                          InputProps={{

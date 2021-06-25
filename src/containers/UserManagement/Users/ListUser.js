@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom';
 import {useSnackbar} from 'notistack';
 import {fetchUsers} from '../UserServicesList';
 import TablePagination from '@material-ui/core/TablePagination';
+import {Notify, setProps} from '../../../shared/components/notification/Notification';
 
 const useStyles = makeStyles(theme => ({
   tableHead: {
@@ -16,35 +17,30 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const ListUser = ({querySearch, date, role, status}) => {
+export const ListUser = ({role}) => {
   const history = useHistory();
   const classes = useStyles();
   const snackbar = useSnackbar();
   const [users, setUsers] = useState([]);
-  const [includeList, setIncludeList] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const checkQuery = (search) => {
-    return search !== '' || search !== undefined;
-  };
+  useEffect(() => {
+    setProps(snackbar);
+    fetchAdminUsers();
+  }, [page, rowsPerPage]);
 
-  /*const fetchAdminUsers = () => {
+  const fetchAdminUsers = () => {
     fetchUsers({
-      q: querySearch,
-      status: status,
       roles: [role],
-      page: checkQuery(querySearch) ? 1 : page,
+      page: page,
       per_page: rowsPerPage,
-      from_date: date?.from_date,
-      to_date: date?.to_date
     }).then(response => {
       setTotal(response.meta.total);
-      setIncludeList(response.included);
-      setUsers(response.data);
+      setUsers(response.users);
     }).catch(err => Notify(err, 'error'));
-  };*/
+  };
 
   const handlePageChange = (event, page) => {
     setPage(page + 1);
@@ -72,16 +68,19 @@ export const ListUser = ({querySearch, date, role, status}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-              <TableRow hover={true} className="hand-cursor">
-                <TableCell className={classes.tableBody}>1</TableCell>
-                <TableCell className={classes.tableBody} style={{textTransform: 'capitalize'}}>karma</TableCell>
-                <TableCell className={classes.tableBody}>
-                  <a href='mailto: kinga@gmail.com'>kinga@gmail.com</a>
-                </TableCell>
-                <TableCell className={classes.tableBody}>
-                  <a href={'tel: 17971633'}>17971633</a>
-                </TableCell>
-              </TableRow>
+            {users.length > 0  && users?.map((user, index) => (
+            <TableRow hover={true} key={index} className="hand-cursor">
+              <TableCell className={classes.tableBody}>{index+1}</TableCell>
+              <TableCell className={classes.tableBody} style={{textTransform: 'capitalize'}}>
+                {user?.profile_attributes?.first_name} {' '} {user?.profile_attributes?.last_name}</TableCell>
+              <TableCell className={classes.tableBody}>
+                <a href="mailto: kinga@gmail.com">{user?.email}</a>
+              </TableCell>
+              <TableCell className={classes.tableBody}>
+                <a href={`tel:${user?.attributes?.phone}`}>{user?.phone}</a>
+              </TableCell>
+            </TableRow>
+            ))}
           </TableBody>
         </Table>
         <TablePagination
@@ -96,4 +95,4 @@ export const ListUser = ({querySearch, date, role, status}) => {
       </TableContainer>
     </React.Fragment>
   );
-}
+};

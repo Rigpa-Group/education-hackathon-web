@@ -93,13 +93,13 @@ export default function UserManagement() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <ListUser querySearch={querySearch} date={date} role={1} status={true}/>
+          <ListUser role={1}/>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <ListUser querySearch={querySearch} date={date} role={2} status={true}/>
+          <ListUser role={2}/>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <ListUser querySearch={querySearch} date={date} role={''} status={false}/>
+          <ListUser role={3}/>
         </TabPanel>
       </SwipeableViews>
     </div>

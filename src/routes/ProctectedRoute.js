@@ -50,6 +50,14 @@ export const protectedRoutes = [
   },
 
   {
+    title: 'Course Edit',
+    path: '/course/:id',
+    authorized: ['Admin'],
+    component: AddCourse,
+    visible: 'false',
+  },
+
+  {
     title: 'Course Detail',
     path: '/course/detail/:id',
     authorized: ['Admin'],

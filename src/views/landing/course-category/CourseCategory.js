@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 });
 const courseLoop = ['1', '2', '3', '4'];
 
-export default function CourseCategory({index}) {
+export default function CourseCategory({id}) {
   const classes = useStyles();
   const history = useHistory();
   const [value, setValue] = React.useState(2);
@@ -42,7 +42,7 @@ export default function CourseCategory({index}) {
   }, []);
 
   const fetchCourses = () => {
-    courseApi('get', null, {per_page: 4}).then(response => {
+    courseApi('get', null, {per_page: 4, category_id:id, status: 'approved'}).then(response => {
       setCourses(response.courses);
     }).catch(err => Notify(err, 'error'));
   };

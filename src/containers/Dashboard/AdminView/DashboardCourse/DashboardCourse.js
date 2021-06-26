@@ -24,7 +24,7 @@ export const DashboardCourse = () => {
   const [courses, setCourses] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const theme = useTheme();
 
   useEffect(() => {

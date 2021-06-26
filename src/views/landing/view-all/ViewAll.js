@@ -51,7 +51,7 @@ export default function ViewAll() {
   }, []);
 
   const fetchCourses = () => {
-    courseApi('get').then(response => {
+    courseApi('get',null,{status: 'approved'}).then(response => {
       setCourses(response.courses);
     }).catch(err => Notify(err, 'error'));
   };

@@ -79,9 +79,6 @@ export default function ViewAll() {
                         name="simple-controlled"
                         value={course?.average_review === 0 ? 2 : course?.average_review}
                         readOnly={true}
-                        onChange={(event, newValue) => {
-                          setValue(newValue);
-                        }}
                       />
                     </Box>
                   </CardContent>

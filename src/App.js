@@ -14,6 +14,10 @@ import {protectedRoutes} from './routes/ProctectedRoute';
 import {ProtectedNavigator} from './routes/ProtedNavigator';
 import {theme} from './Theme';
 import {initialUser, userReducer} from './reducers';
+import {landingRoutes} from './routes/Routes';
+import {LandingNavigator} from './routes/LandingNavigator';
+import ForbiddenPage from './shared/components/ErrorPage/ForbiddenPage';
+import NotFound from './shared/components/PageNotFound/PageNotFound';
 
 function App() {
   const [state, dispatch] = useCombinedReducers({
@@ -31,22 +35,21 @@ function App() {
             <SnackbarProvider maxSnack={2}>
               <Router history={history}>
                 <Switch>
-                  {/*{
+                  {
                     landingRoutes.map((nav, index) => (
                       <LandingNavigator {...nav} key={index} path={nav.path}
                                         component={nav.component} exact/>))
-                  }*/}
+                  }
                   {
                     protectedRoutes.map((nav, index) => (
                       <ProtectedNavigator {...nav} key={index} path={nav.path}
                                           component={nav.component} exact/>))
                   }
-                  <Route path="/" component={Login} exact/>
                   <Route path="/login" component={Login} exact/>
                   <Route path="/sign-up" component={SignUp} exact/>
-                  {/*<Route path="/forbidden" component={ForbiddenPage} exact/>*/}
+                  <Route path="/forbidden" component={ForbiddenPage} exact/>
                   <Route path="/auth/confirmation" component={EmailConfirmation} exact/>
-                  {/*<Route path="*" component={NotFound}/>*/}
+                 <Route path="*" component={NotFound}/>
                 </Switch>
               </Router>
             </SnackbarProvider>

@@ -1,0 +1,32 @@
+.stripe-areatwo {
+  padding-top: 3vh;
+  padding-bottom: 3vh;
+  color: #FFFFFF;
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+  background-color: #03A2A5;
+  box-shadow: 0 3px 5px #868383;
+
+  .item-flex {
+    display: flex;
+
+    .item-inline {
+      display: inline;
+
+      .title {
+        font-size: 21px;
+        line-height: 0 !important;
+        font-weight: 700;
+        padding-top: 20px;
+        padding-left: 20px;
+      }
+
+      .description {
+        font-size: 16px;
+        line-height: 1.4 !important;
+        padding-top: 10px;
+        padding-left: 20px;
+      }
+    }
+  }
+}

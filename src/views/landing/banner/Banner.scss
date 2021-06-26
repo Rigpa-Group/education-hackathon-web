@@ -1,0 +1,36 @@
+.containerImage {
+  position: relative;
+
+  .banner {
+    margin-top: 20vh;
+    margin-bottom: 15vh;
+  }
+
+  .imageBanner {
+    width: 100%;
+  }
+
+  .textInspiration {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    color: white;
+
+
+    .explore {
+      line-height: 1.2 !important;
+      font-size: 45px;
+      font-weight: 700;
+    }
+    .teach {
+      line-height: 1.2 !important;
+      font-size: 45px;
+      font-weight: 400;
+    }
+    .skills {
+      line-height: 1 !important;
+      font-size: 45px;
+      font-weight: 300;
+    }
+  }
+}

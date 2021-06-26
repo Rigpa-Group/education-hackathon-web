@@ -1,11 +1,12 @@
 import {Login} from '../components/auth/Login/Login';
+import {LandingComponent} from '../views/landing/LandingComponent/LandingComponent';
 
 export const landingRoutes = [
   {
-    title: 'About Us',
-    path: '/about-us',
+    title: 'Landing',
+    path: '/',
     authorized: [''],
-    component: Login,
+    component: LandingComponent,
     visible: 'false',
   },
 ];

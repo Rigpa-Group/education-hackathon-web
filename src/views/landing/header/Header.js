@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,6 +9,10 @@ import './Header.scss';
 import {Autocomplete} from '@material-ui/lab';
 import TextField from '@material-ui/core/TextField';
 import {useHistory} from 'react-router-dom';
+import {Notify, setProps} from '../../../shared/components/notification/Notification';
+import {fetchUsers} from '../../../containers/UserManagement/UserServicesList';
+import {courseCategoryApi} from '../../../services/CourseServices';
+import {useSnackbar} from 'notistack';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,14 +36,25 @@ const useStyles = makeStyles((theme) => ({
 export default function Header() {
   const history = useHistory();
   const classes = useStyles();
+  const [categories, setCategories] = useState();
+  const snackbar = useSnackbar();
+  const [inputSearch, setInputSearch] = useState('');
 
-  const categoryList = [
-    {title: 'Dzongkha'},
-    {title: 'English'},
-    {title: 'Maths'},
-    {title: 'Nursery'},
-    {title: 'Science'},
-  ];
+  useEffect(() => {
+    setProps(snackbar);
+    fetchAdminUsers();
+  }, [inputSearch]);
+
+  const fetchAdminUsers = () => {
+    courseCategoryApi('get',null,{q: inputSearch}).then(response => {
+      setCategories(response.course_categories);
+    }).catch(err => Notify(err, 'error'));
+  };
+
+  const handleInputChange = (value) => {
+    setInputSearch(value);
+  };
+
   return (
     <div className={classes.root}>
       <AppBar className={classes.appbar} position="fixed">
@@ -50,8 +65,9 @@ export default function Header() {
           <div className='categorylist'>
             <Autocomplete
               id="combo-box-demo"
-              options={categoryList}
-              getOptionLabel={(option) => option.title}
+              options={categories}
+              getOptionLabel={(option) => option.name}
+              onInputChange={(e, value) => handleInputChange(value)}
               renderInput={(params) => <TextField {...params} placeholder='Category'
                                                  size="small" variant="outlined"/>}
             />

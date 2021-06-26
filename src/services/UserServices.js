@@ -17,3 +17,9 @@ export const profileAPi = (method, id, payload = null, params = null) => {
     return response.data;
   });
 };
+
+export const userCountAPi = (method, id, payload = null, params = null) => {
+  return baseApi(`/dashboards`, method, params, payload).then(response => {
+    return response.data;
+  });
+};

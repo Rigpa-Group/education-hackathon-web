@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Typography from '@material-ui/core/Typography';
 import {Card, Grid} from '@material-ui/core';
 import PeopleIcon from '@material-ui/icons/People';
@@ -7,8 +7,26 @@ import FormatShapesIcon from '@material-ui/icons/FormatShapes';
 import '../../assets/stylesheets/_utility.scss';
 import {DashboardCourse} from './AdminView/DashboardCourse/DashboardCourse';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
+import {Notify, setProps} from '../../shared/components/notification/Notification';
+import {courseApi} from '../../services/CourseServices';
+import {useSnackbar} from 'notistack';
+import {userCountAPi} from '../../services/UserServices';
 
 export const Dashboard = () => {
+const [userCount, setUserCount] = useState();
+const snackbar = useSnackbar();
+
+  useEffect(() => {
+    setProps(snackbar);
+    fetchUserCount();
+  }, []);
+
+  const fetchUserCount = () => {
+    userCountAPi('get').then(response => {
+      debugger
+      setUserCount(response.report);
+    }).catch(err => Notify(err, 'error'));
+  };
 
   return (
     <div>
@@ -24,7 +42,7 @@ export const Dashboard = () => {
                   Admin
                 </Typography>
                 <Typography style={{color: 'white', fontSize: 26, fontWeight: 900}}>
-                  1
+                  {userCount?.total_admins}
                 </Typography>
               </Grid>
             </Grid>
@@ -41,7 +59,7 @@ export const Dashboard = () => {
                   Tutors
                 </Typography>
                 <Typography style={{color: 'white', fontSize: 26, fontWeight: 900}}>
-                  200
+                  {userCount?.total_tutors}
                 </Typography>
               </Grid>
             </Grid>
@@ -58,7 +76,7 @@ export const Dashboard = () => {
                   Learners
                 </Typography>
                 <Typography style={{color: 'white', fontSize: 26, fontWeight: 900}}>
-                  5000
+                  {userCount?.total_learners}
                 </Typography>
               </Grid>
             </Grid>
@@ -75,7 +93,7 @@ export const Dashboard = () => {
                   Courses
                 </Typography>
                 <Typography style={{color: 'white', fontSize: 26, fontWeight: 900}}>
-                  25000
+                  {userCount?.total_courses}
                 </Typography>
               </Grid>
             </Grid>

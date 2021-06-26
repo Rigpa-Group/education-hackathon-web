@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Card,
   Grid,
@@ -14,20 +14,43 @@ import FormatShapesIcon from '@material-ui/icons/FormatShapes';
 import TablePagination from '@material-ui/core/TablePagination';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
 import {useTheme} from '@material-ui/core';
+import {useSnackbar} from 'notistack';
+import {Notify, setProps} from '../../../../shared/components/notification/Notification';
+import {courseApi} from '../../../../services/CourseServices';
+import Moment from 'react-moment';
 
 export const DashboardCourse = () => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const snackbar = useSnackbar();
+  const [courses, setCourses] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const theme = useTheme();
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  useEffect(() => {
+    setProps(snackbar);
+    fetchCourses();
+  }, [page, rowsPerPage]);
+
+  const fetchCourses = () => {
+    courseApi('get', null, {
+      page: page,
+      per_page: rowsPerPage,
+    }).then(response => {
+      setTotal(response.meta.total);
+      setCourses(response.courses);
+    }).catch(err => Notify(err, 'error'));
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handlePageChange = (event, page) => {
+    setPage(page + 1);
   };
+
+  const handleRowsPerPageChange = event => {
+    setRowsPerPage(event.target.value);
+    setPage(1);
+  };
+
 
   return (
     <div>
@@ -41,11 +64,6 @@ export const DashboardCourse = () => {
               Courses
             </Typography>
           </Grid>
-          <Grid item lg={4} xs={4} align="right">
-            <Typography style={{color: theme.primary, fontSize: 16, marginTop: 7}}>
-              View All
-            </Typography>
-          </Grid>
         </Grid>
         <TableContainer>
           <Table size="small">
@@ -53,55 +71,31 @@ export const DashboardCourse = () => {
               <TableRow>
                 <TableCell style={{color: theme.primary, fontSize: 18}}>Sl.no</TableCell>
                 <TableCell style={{color: theme.primary, fontSize: 18}}>Course Title</TableCell>
+                <TableCell style={{color: theme.primary, fontSize: 18}}>Course Category</TableCell>
                 <TableCell style={{color: theme.primary, fontSize: 18}}>Posted Date</TableCell>
                 <TableCell style={{color: theme.primary, fontSize: 18}}>Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell style={{color: '#727070', fontSize: 14}}>1</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>Thimphu Tshechu</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>12/12/2022</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>Approved</TableCell>
+              {courses.length > 0 && courses?.map((course, index) => (
+                <TableRow key={index}>
+                <TableCell style={{color: '#727070', fontSize: 14}}>{index+1}</TableCell>
+                <TableCell style={{color: '#727070', fontSize: 14}}>{course?.name}</TableCell>
+                <TableCell style={{color: '#727070', fontSize: 14}}>{course?.course_category?.name}</TableCell>
+                <TableCell style={{color: '#727070', fontSize: 14}}><Moment format="LL" withTitle>{course?.created_at}</Moment></TableCell>
+                <TableCell style={{color: '#727070', fontSize: 14}}>{course?.status}</TableCell>
               </TableRow>
-              <TableRow>
-                <TableCell style={{color: '#727070', fontSize: 14}}>2</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>Thimphu Tshechu</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>12/12/2022</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>Approved</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell style={{color: '#727070', fontSize: 14}}>3</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>Thimphu Tshechu</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>12/12/2022</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>Pending</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell style={{color: '#727070', fontSize: 14}}>4</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>Thimphu Tshechu</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>12/12/2022</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>Pending</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell style={{color: '#727070', fontSize: 14}}>5</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>Thimphu Tshechu</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>12/12/2022</TableCell>
-                <TableCell style={{color: '#727070', fontSize: 14}}>Pending</TableCell>
-              </TableRow>
+              ))}
             </TableBody>
           </Table>
           <TablePagination
-            style={{float: 'right'}}
-            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-            colSpan={3}
+            component="div"
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={handleRowsPerPageChange}
+            page={page - 1}
+            count={total}
             rowsPerPage={rowsPerPage}
-            page={page}
-            SelectProps={{
-              inputProps: { 'aria-label': 'rows per page' },
-              native: true,
-            }}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
+            rowsPerPageOptions={[5, 10, 25, 50, 100]}
           />
         </TableContainer>
       </Card>

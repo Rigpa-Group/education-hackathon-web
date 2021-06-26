@@ -7,10 +7,11 @@ import Divider from '@material-ui/core/Divider';
 import CourseDetailTab from './course-detail-tab/CourseDetailTab';
 import CourseVideoAccordian from './course-detail-tab/course-video-list/CourseVideoList';
 import {Player} from 'video-react';
-import {useParams} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 import {courseAction, reviewCoursesApi} from '../../../../services/CourseServices';
 import {useSnackbar} from 'notistack';
 import {Notify, setProps} from '../../../../shared/components/notification/Notification';
+import RenderAuthorized from '../../../../routes/RenderAuthorized';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -37,6 +38,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function CourseDetail({index}) {
   const classes = useStyles();
+  const history = useHistory();
   const snackbar = useSnackbar();
   const params = useParams();
   const [course, setCourse] = useState({});
@@ -81,6 +83,15 @@ export default function CourseDetail({index}) {
     }).catch(err => Notify(err, 'error'));
   };
 
+  const handleStatus = (value) => {
+    courseAction('put', params?.id, {course: {status: value}}).then(res => {
+      history.push('/course/list')
+      Notify('Course status Updated Successfully', 'success');
+    }).catch(error => {
+      Notify(error, 'error');
+    });
+  };
+
   return (
     <Container>
       <Grid container spacing={2}>
@@ -90,12 +101,28 @@ export default function CourseDetail({index}) {
                     src={video?.clip_url ?? `https://media.w3.org/2010/05/sintel/trailer_hd.mp4`}
                     playsInline/>
           </div>
-          <Typography className='video-title text-capitalize'>
-            {course?.name}
-          </Typography>
-          <Typography className='tutor-name text-capitalize'>
-            {course?.user?.profile_attributes?.first_name} {course?.user?.profile_attributes?.last_name}
-          </Typography>
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <div>
+              <Typography className="video-title text-capitalize">
+                {course?.name}
+              </Typography>
+              <Typography className="tutor-name text-capitalize">
+                {course?.user?.profile_attributes?.first_name} {course?.user?.profile_attributes?.last_name}
+              </Typography>
+            </div>
+            <RenderAuthorized authorized={['Admin']}>
+              {(course?.status === 'pending' || course?.status === 'rejected') ?
+                <Button variant="outlined" color="primary" style={{float: 'right'}}
+                        onClick={() => handleStatus('approved')}>
+                  Approve
+                </Button> :
+                <Button variant="outlined" color="secondary" style={{float: 'right'}}
+                        onClick={() => handleStatus('rejected')}>
+                  Reject
+                </Button>
+              }
+            </RenderAuthorized>
+          </div>
           <div>
             <Divider style={{marginTop: '2%', marginBottom: '2%'}}/>
           </div>
@@ -104,8 +131,8 @@ export default function CourseDetail({index}) {
           </div>
         </Grid>
         <Grid item lg={4}>
-          <Card className='cardContainer'>
-            <Typography className='course-list'>
+          <Card className="cardContainer">
+            <Typography className="course-list">
               Course list
             </Typography>
             <Divider/>

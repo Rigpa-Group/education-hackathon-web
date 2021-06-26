@@ -56,7 +56,7 @@ export default function ViewAll() {
   }, [page]);
 
   const fetchCourses = () => {
-    courseApi('get', null, {per_page: 12, page: page}).then(response => {
+    courseApi('get', null, {per_page: 12, page: page, status: 'approved'}).then(response => {
       setTotal(response.meta?.last_page);
       setCourses(response.courses);
     }).catch(err => Notify(err, 'error'));

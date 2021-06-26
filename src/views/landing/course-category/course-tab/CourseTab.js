@@ -93,19 +93,19 @@ export default function CourseTab() {
         </Tabs>
       </div>
       <TabPanel value={value} index={0}>
-        <CourseCategory/>
+        <CourseCategory id={1}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <CourseCategory/>
+        <CourseCategory id={2}/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <CourseCategory/>
+        <CourseCategory id={3}/>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <CourseCategory/>
+        <CourseCategory id={5}/>
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <CourseCategory/>
+        <CourseCategory id={4}/>
       </TabPanel>
     </Container>
   );

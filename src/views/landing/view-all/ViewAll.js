@@ -1,10 +1,12 @@
 import React from 'react';
-import {Card, CardActionArea, CardContent, CardMedia, Container, makeStyles} from '@material-ui/core';
+import {Card, CardActionArea, CardContent, Container, makeStyles} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import './ViewStyles.scss';
 import Rating from '@material-ui/lab/Rating';
 import Pagination from '@material-ui/lab/Pagination';
+import {Player} from 'video-react';
 
 const useStyles = makeStyles({
   root: {
@@ -46,10 +48,8 @@ export default function ViewAll() {
             <Grid item lg={3}>
               <Card className={classes.root}>
                 <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image={require('../../../assets/images/allImage.jpeg').default}
-                    title="Contemplative Reptile"/>
+                  <Player className={classes.media} poster='/assets/allImage.jpeg'
+                          src="/assets/video.mp4" playsInline/>
                   <CardContent>
                     <Typography gutterBottom className='title' component="h2">
                       Annual Merek Sakten Festival
@@ -74,7 +74,7 @@ export default function ViewAll() {
         </Grid>
       ))}
       <div className={classes.pagination}>
-        <Pagination count={10} color="primary" />
+        <Pagination count={10} color="primary"/>
       </div>
     </Container>
   );

@@ -85,10 +85,13 @@ export default function CourseTab() {
       <div position="static">
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
           {categories?.length && categories?.map((category, index) => (
-            <Tab label={`${category?.name}`}{...a11yProps(1)} />
+            <Tab label={`${category?.name}`}{...a11yProps(0)} />
           ))}
         </Tabs>
       </div>
+      <TabPanel value={value} index={0}>
+        <CourseCategory/>
+      </TabPanel>
       <TabPanel value={value} index={1}>
         <CourseCategory/>
       </TabPanel>
@@ -96,9 +99,6 @@ export default function CourseTab() {
         <CourseCategory/>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <CourseCategory/>
-      </TabPanel>
-      <TabPanel value={value} index={4}>
         <CourseCategory/>
       </TabPanel>
       <TabPanel value={value} index={5}>

@@ -26,7 +26,7 @@ export const pages = [
   },
   {
     title: 'Courses',
-    href: '/courses',
+    href: '/course/list',
     visible: true,
     authorized: ['Admin'],
     icon: <ReorderIcon/>,

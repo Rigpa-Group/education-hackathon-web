@@ -5,7 +5,6 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import {useSnackbar} from 'notistack';
-import {setProps} from '../Notification/Notify';
 import {useFormikContext} from 'formik';
 
 const useStyles = makeStyles(theme => ({
@@ -52,13 +51,6 @@ export const SingleImageUpload = (props) => {
   const {setFieldValue} = useFormikContext();
   const {photos, url, id, text} = props;
   const [image, setImage] = useState(null);
-
-  useEffect(() => {
-    setProps(snackbar);
-    if (photos?.filter(val => val.type === 'photo').length > 0) {
-      setImage(photos?.filter(val => val.type === 'photo')?.[0]);
-    }
-  }, []);
 
   const handleUpload = (files) => {
     setFieldValue(`photo_attributes.image`, files[0]);

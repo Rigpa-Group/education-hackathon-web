@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import {useSnackbar} from 'notistack';
 import {useFormikContext} from 'formik';
 import CloseIcon from '@material-ui/icons/Close';
-import {Notify, setProps} from '../components/notification/Notification';
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -47,30 +46,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const SharedImageUpload = (props) => {
-  const {values, handleChange, setFieldValue, errors} = useFormikContext();
+  //const {values, handleChange, setFieldValue, errors} = useFormikContext();
   const classes = useStyles();
   const snackbar = useSnackbar();
   const {photos, url, id} = props;
   const [images, setImages] = useState([]);
-
-  useEffect(() => {
-    setProps(snackbar);
-  }, []);
-
-  const handleUpload = (files) => {
-    if (images.length < 5 && files.length > 0) {
-      setFieldValue(`photos_attributes[${images.length}].image`, files[0]);
-      images.push({attributes: {medium: URL.createObjectURL(files?.[0])}});
-    } else {
-      Notify('You can upload only upto 5 images', 'error');
-    }
-  };
-
-  const handleDeleteImg = (img, index) => {
-    images.splice(index, 1);
-    values.photos_attributes.splice(index, 1);
-    setImages([...images]);
-  };
 
   return (
     <React.Fragment>
@@ -79,7 +59,7 @@ export const SharedImageUpload = (props) => {
           {images.map((image, index) => (
             <Grid item xs={3} lg={3} key={index}>
               <img className={classes.preview} src={image?.attributes?.medium} alt=""/>
-              <CloseIcon className={classes.closeIcon} onClick={() => handleDeleteImg(image, index)}/>
+              <CloseIcon className={classes.closeIcon} />
             </Grid>
           ))}
           {images.length > 0 ?
@@ -91,7 +71,7 @@ export const SharedImageUpload = (props) => {
                 Upload Picture
                 <input
                   multiple
-                  onChange={(e) => handleUpload(e.currentTarget?.files)}
+                  //onChange={(e) => handleUpload(e.currentTarget?.files)}
                   type="file" accept="image/*"
                   hidden
                 />
@@ -102,10 +82,10 @@ export const SharedImageUpload = (props) => {
                 <div>
                   <CloudUploadIcon className={classes.iconFont}/>
                 </div>
-                <Typography variant="h6">Upload Picture</Typography>
+                <Typography variant="h6">Upload Videos</Typography>
                 <input
                   multiple
-                  onChange={(e) => handleUpload(e.currentTarget?.files)}
+                  //onChange={(e) => handleUpload(e.currentTarget?.files)}
                   type="file" accept="image/*"
                   hidden
                 />
@@ -114,10 +94,9 @@ export const SharedImageUpload = (props) => {
           }
         </Grid>
       </div>
-      {errors?.photos_attributes?.length > 0 &&
       <Typography variant="subtitle2">
         <span style={{color: '#eb4326'}}>Image field is required</span>
-      </Typography>}
+      </Typography>
     </React.Fragment>
   );
 };

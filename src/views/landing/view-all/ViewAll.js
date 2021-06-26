@@ -37,7 +37,7 @@ export default function ViewAll() {
     <Container>
       <Container>
         <Typography className={classes.title}>
-          Other Related Videos
+          Courses
         </Typography>
       </Container>
       {containerLoop.map(val => (

@@ -11,6 +11,8 @@ import './CourseTab.scss';
 import {Notify, setProps} from '../../../../shared/components/notification/Notification';
 import {courseCategoryApi} from '../../../../services/CourseServices';
 import {useSnackbar} from 'notistack';
+import Button from '@material-ui/core/Button';
+import {useHistory} from 'react-router-dom';
 
 function TabPanel(props) {
   const {children, value, index, ...other} = props;
@@ -52,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export default function CourseTab() {
+  const history = useHistory();
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [categories, setCategories] = useState();

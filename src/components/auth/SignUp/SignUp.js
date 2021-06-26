@@ -72,24 +72,24 @@ export default function SignUp() {
                 }) => (
                 <Form onSubmit={formik.handleSubmit}>
                   <Field component={TextField} name="profile_attributes.first_name" label="First Name" type="text"
-                         variant="outlined" required fullWidth/>
+                         variant="outlined" required fullWidth margin="dense"/>
                   <Field component={TextField} name="profile_attributes.last_name" label="Last Name" type="text"
-                         variant="outlined" style={{marginTop: 15}} fullWidth/>
+                         variant="outlined" style={{marginTop: 10}} fullWidth margin="dense"/>
                   <Field component={TextField} name="phone" label="Phone" type="number" variant="outlined" fullWidth
-                         required style={{marginTop: 15}}/>
+                         required style={{marginTop: 10}} margin="dense"/>
                   <Field component={TextField} name="email" label="Email" type="email" variant="outlined" fullWidth
-                         required style={{marginTop: 15}}/>
+                         required style={{marginTop: 10}} margin="dense"/>
                   <Autocomplete
                     id="combo-box-demo"
                     options={gender}
                     getOptionLabel={(option) => option.title}
                     onChange={(e, value) => formik.setFieldValue('profile_attributes.gender', value?.value)}
-                    style={{width: '100%', marginTop: 15}}
+                    style={{width: '100%', marginTop: 10}}
                     renderInput={(params) => <Field component={TextField} name="profile_attributes.gender"
-                                                    {...params} label="Gender" required variant="outlined"/>}
+                                                    {...params} label="Gender" required variant="outlined" margin="dense"/>}
                   />
                   <Field component={TextField} name="password" label="Password" variant="outlined" required
-                         type={passwordValues.showPassword ? 'text' : 'password'} fullWidth
+                         type={passwordValues.showPassword ? 'text' : 'password'} fullWidth margin="dense"
                          InputProps={{
                            endAdornment: <InputAdornment position="end">
                              <IconButton
@@ -101,8 +101,8 @@ export default function SignUp() {
                              </IconButton>
                            </InputAdornment>,
                          }}
-                         style={{marginTop: 15}}/>
-                  <Field component={TextField} name="confirmation_password" label="Confirm Password" required
+                         style={{marginTop: 10}}/>
+                  <Field component={TextField} name="confirmation_password" margin="dense" label="Confirm Password" required
                          type={passwordValues.showCpassword ? 'text' : 'password'}
                          variant="outlined" fullWidth
                          InputProps={{
@@ -116,7 +116,7 @@ export default function SignUp() {
                              </IconButton>
                            </InputAdornment>,
                          }}
-                         style={{marginTop: 15}}/>
+                         style={{marginTop: 10}}/>
                   <Button variant="contained" color={'primary'} className="signup-btn" type="submit">
                     SignUp
                   </Button>

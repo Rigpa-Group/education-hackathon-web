@@ -7,6 +7,7 @@ import './ViewStyles.scss';
 import Rating from '@material-ui/lab/Rating';
 import Pagination from '@material-ui/lab/Pagination';
 import {Player} from 'video-react';
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
 
 const useStyles = makeStyles({
   root: {
@@ -42,6 +43,19 @@ export default function ViewAll() {
           Courses
         </Typography>
       </Container>
+      <Grid container spacing={3}>
+        {[1, 2, 3, 4].map(val => (
+          <Grid item lg={3} xs={6} className="mt-4" key={val}>
+            <SkeletonTheme color="#e8eaed" highlightColor="#c8cccc">
+              <Skeleton delay={1} duration={2} height={150} style={{borderRadius: 3}}/>
+              <Typography>
+                <Skeleton delay={1} duration={2} height={15} width={'90%'}/>
+                <Skeleton delay={1} duration={2} height={15} width={'100%'}/>
+                <Skeleton delay={1} duration={2} height={15} width={150}/>
+              </Typography>
+            </SkeletonTheme>
+          </Grid>))}
+      </Grid>
       {containerLoop.map(val => (
         <Grid container spacing={2}>
           {viewAll.map(val => (

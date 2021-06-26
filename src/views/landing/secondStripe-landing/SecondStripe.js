@@ -24,13 +24,10 @@ export default function SecondStripe() {
         <Grid container spacing={2}>
           <Grid item lg={4}>
             <div className="item-flex">
-              <CastForEducationIcon className={classes.large}/>
+              <PlayCircleFilledWhiteIcon className={classes.large}/>
               <div className='item-inline'>
                 <Typography className='title'>
-                  Check courses
-                </Typography>
-                <Typography className='description'>
-                  Explore to learn new things
+                  Over 555,000 video courses and files on career and personal skills
                 </Typography>
               </div>
             </div>
@@ -40,23 +37,17 @@ export default function SecondStripe() {
               <VerifiedUserIcon className={classes.large}/>
               <div className='item-inline'>
                 <Typography className='title'>
-                  Ask any Questions
-                </Typography>
-                <Typography className='description'>
-                  Learning begins today
+                  Choose from top industry instructors / tutors across the Bhutan
                 </Typography>
               </div>
             </div>
           </Grid>
           <Grid item lg={4}>
             <div className="item-flex">
-              <PlayCircleFilledWhiteIcon className={classes.large}/>
+              <CastForEducationIcon className={classes.large}/>
               <div className='item-inline'>
                 <Typography className='title'>
-                  Dont have an account?
-                </Typography>
-                <Typography className='description'>
-                  Sign up with EduTch to explore more
+                  Learn with lifetime access on mobile and laptop
                 </Typography>
               </div>
             </div>

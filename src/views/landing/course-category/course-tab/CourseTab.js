@@ -77,14 +77,14 @@ export default function CourseTab() {
 
   return (
     <Container className={classes.root}>
-      <Container className="container-main">
+      <div className="container-main">
         <Typography className="title1">
           The Bhutan’s largest selection of courses
         </Typography>
         <Typography className="description1">
           Choose your courses from 10,000 different courses available
         </Typography>
-      </Container>
+      </div>
       <div position="static">
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
           {categories?.length && categories?.map((category, index) => (

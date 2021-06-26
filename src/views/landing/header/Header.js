@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
   },
   appbar: {
     backgroundColor: 'white',
-    boxShadow: 'none'
   },
   blackColor: {
     color: 'black'

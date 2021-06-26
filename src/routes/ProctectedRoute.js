@@ -3,6 +3,7 @@ import {UserProfile} from '../containers/UserManagement/Userprofile/UserProfile'
 import {Dashboard} from '../containers/Dashboard/Dashboard';
 import {ListCourse} from '../containers/Courses/ListCourse';
 import {AddCourse} from '../containers/Courses/AddCourse';
+import CourseDetail from '../views/landing/course-category/course-detail/CourseDetail';
 
 export const protectedRoutes = [
   {
@@ -45,6 +46,14 @@ export const protectedRoutes = [
     path: '/course/add',
     authorized: ['Admin'],
     component: AddCourse,
+    visible: 'false',
+  },
+
+  {
+    title: 'Course Detail',
+    path: '/course/detail/:id',
+    authorized: ['Admin'],
+    component: CourseDetail,
     visible: 'false',
   },
 ];

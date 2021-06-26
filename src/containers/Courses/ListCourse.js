@@ -1,12 +1,23 @@
-import React from 'react';
-import ViewAll from '../../views/landing/view-all/ViewAll';
-import {makeStyles, Button, Table, TableHead, TableRow, TableCell, TableBody, TableContainer} from '@material-ui/core';
-import {useHistory} from 'react-router-dom'
+import React, {useEffect, useState} from 'react';
+import {
+  Button,
+  makeStyles,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  useTheme
+} from '@material-ui/core';
+import {useHistory} from 'react-router-dom';
 import RenderAuthorized from '../../routes/RenderAuthorized';
 import TablePagination from '@material-ui/core/TablePagination';
-import {useTheme} from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Tooltip from '@material-ui/core/Tooltip';
+import {useSnackbar} from 'notistack';
+import {Notify, setProps} from '../../shared/components/notification/Notification';
+import {courseApi} from '../../services/CourseServices';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -17,34 +28,58 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 30,
     marginRight: 25,
   }
-}))
+}));
 
 export const ListCourse = () => {
   const classes = useStyles();
   const history = useHistory();
   const theme = useTheme();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const snackbar = useSnackbar();
+  const [courses, setCourses] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  useEffect(() => {
+    setProps(snackbar);
+    fetchCourses();
+  }, [page, rowsPerPage]);
+
+  const fetchCourses = () => {
+    debugger
+    courseApi('get',null, {
+      page: page,
+      per_page: rowsPerPage,
+    }).then(response => {
+      debugger
+      setTotal(response.meta.total);
+      setCourses(response.courses);
+    }).catch(err => Notify(err, 'error'));
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handlePageChange = (event, page) => {
+    setPage(page + 1);
+  };
+
+  const handleRowsPerPageChange = event => {
+    setRowsPerPage(event.target.value);
+    setPage(1);
   };
 
   const addCourse = () => {
-    history.push('/course/add')
-  }
+    history.push('/course/add');
+  };
+
+  const handleDetail = (id) => {
+    history.push(`/course/detail/${id}`);
+  };
 
   return (
     <React.Fragment>
       <RenderAuthorized authorized={['Tutor']}>
-      <section>
-        <Button variant="contained" className={classes.button} onClick={addCourse}>Add Course</Button>
-      </section>
+        <section>
+          <Button variant="contained" className={classes.button} onClick={addCourse}>Add Course</Button>
+        </section>
       </RenderAuthorized>
       <TableContainer>
         <Table size="small">
@@ -53,81 +88,36 @@ export const ListCourse = () => {
               <TableCell style={{color: theme.primary, fontSize: 18}}>Sl.no</TableCell>
               <TableCell style={{color: theme.primary, fontSize: 18}}>Course Name</TableCell>
               <TableCell style={{color: theme.primary, fontSize: 18}}>Course Category</TableCell>
-              <TableCell style={{color: theme.primary, fontSize: 18}}>Tutor</TableCell>
-              <TableCell style={{color: theme.primary, fontSize: 18}}>Posted Date</TableCell>
               <TableCell style={{color: theme.primary, fontSize: 18}}>Status</TableCell>
               <TableCell/>
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell style={{color: '#727070', fontSize: 14}}>1</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Hacking Tutorials</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Information Technology</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Zala Kinga Norbu</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>12/12/2022</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Approved</TableCell>
-              <TableCell>
-                <Tooltip title="Detail">
-                  <ArrowForwardIcon style={{color: theme.primary}}/>
-                </Tooltip>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={{color: '#727070', fontSize: 14}}>1</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Hacking Tutorials</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Information Technology</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Zala Kinga Norbu</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>12/12/2022</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Approved</TableCell>
-              <TableCell>
-                <Tooltip title="Detail">
-                  <ArrowForwardIcon style={{color: theme.primary}}/>
-                </Tooltip>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={{color: '#727070', fontSize: 14}}>1</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Hacking Tutorials</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Information Technology</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Zala Kinga Norbu</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>12/12/2022</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Approved</TableCell>
-              <TableCell>
-                <Tooltip title="Detail">
-                  <ArrowForwardIcon style={{color: theme.primary}}/>
-                </Tooltip>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={{color: '#727070', fontSize: 14}}>1</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Hacking Tutorials</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Information Technology</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Zala Kinga Norbu</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>12/12/2022</TableCell>
-              <TableCell style={{color: '#727070', fontSize: 14}}>Approved</TableCell>
-              <TableCell>
-                <Tooltip title="Detail">
-                  <ArrowForwardIcon style={{color: theme.primary}}/>
-                </Tooltip>
-              </TableCell>
-            </TableRow>
+            {courses.length > 0 && courses?.map((course, index) => (
+              <TableRow key={index}>
+                <TableCell style={{color: '#727070', fontSize: 14}}>{index+1}</TableCell>
+                <TableCell style={{color: '#727070', fontSize: 14}}>{course?.name}</TableCell>
+                <TableCell style={{color: '#727070', fontSize: 14}}>{course?.course_category?.name}</TableCell>
+                <TableCell style={{color: '#727070', fontSize: 14}}>{course?.status}</TableCell>
+                <TableCell>
+                  <Tooltip title="Detail">
+                    <ArrowForwardIcon style={{color: theme.primary}} onClick={() => handleDetail(course?.id)}/>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
         <TablePagination
-          style={{float: 'right'}}
-          rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-          colSpan={3}
+          component="div"
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handleRowsPerPageChange}
+          page={page - 1}
+          count={total}
           rowsPerPage={rowsPerPage}
-          page={page}
-          SelectProps={{
-            inputProps: { 'aria-label': 'rows per page' },
-            native: true,
-          }}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          rowsPerPageOptions={[5, 10, 25, 50, 100]}
         />
       </TableContainer>
     </React.Fragment>
-  )
-}
+  );
+};

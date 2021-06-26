@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     height: 173
   },
 });
-const courseLoop = ['1', '2', '3', '4', '5'];
+const courseLoop = ['1', '2', '3', '4'];
 
 export default function CourseCategory({index}) {
   const classes = useStyles();
@@ -47,8 +47,8 @@ export default function CourseCategory({index}) {
           <Grid item lg={3}>
             <Card className={classes.root}>
               <CardActionArea>
-                <Player className={classes.media} poster='/assets/images/categoryImg.png'
-                        src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4" playsInline/>
+                <Player className={classes.media} poster='/assets/categoryImg.png'
+                        src="/assets/video.mp4" playsInline/>
                 <CardContent>
                   <Typography gutterBottom className='title' component="h2">
                     Annual Merek Sakten Festival

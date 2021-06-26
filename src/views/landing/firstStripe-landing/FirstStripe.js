@@ -51,12 +51,14 @@ export default function FirstStripe() {
             <div className="item-flex">
               <PermIdentityIcon className={classes.large}/>
               <div className='item-inline'>
-                <Typography className='title'>
-                  Dont have an account?
+                <a href="/sign-up" style={{color: 'white', textDecoration: 'none'}}>
+                <Typography className='instructor-login'>
+                  Be instructor on EduTech?
                 </Typography>
-                <Typography className='description'>
-                  Sign up with EduTch to explore more
+                <Typography className='description-instructor'>
+                    Sign up with EduTch
                 </Typography>
+                </a>
               </div>
             </div>
           </Grid>

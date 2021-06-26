@@ -6,6 +6,7 @@ import {Avatar, Container, Grid} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import {Answer} from './Answer';
 
 const useStyles = makeStyles((theme) => ({
   titleQuestion: {
@@ -44,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   viewMore: {
     display: 'flex',
     justifyContent: 'flex-end'
-  }
+  },
 }));
 
 const questionLoop = ['1', '2', '3', '4'];
@@ -64,7 +65,7 @@ export default function QuestionAndAnswer() {
           <Grid item lg={8} xs={12}>
             <TextareaAutosize color={'primary'} aria-label="minimum height" rowsMin={5}
                               placeholder="Description..." name="description"
-                              //onChange={handleChange}
+              //onChange={handleChange}
                               style={{width: '96%', padding: 10, marginTop: 15, borderColor: '#c4c4c4'}}/>
           </Grid>
         </Grid>
@@ -90,6 +91,7 @@ export default function QuestionAndAnswer() {
             <Typography className={classes.questionDetail}>
               I think it's better to use an array with the routes instead of using for loop multiple times.
             </Typography>
+            <Answer/>
           </div>
         </Container>
       ))}

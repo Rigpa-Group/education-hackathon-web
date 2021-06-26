@@ -15,6 +15,7 @@ import {DispatchContext, StateContext} from '../../../../../store';
 import {Notify, setProps} from '../../../../../shared/components/notification/Notification';
 import {logout} from '../../../../../services/AuthServices';
 import {useSnackbar} from 'notistack';
+import {isAuthorized} from '../../../../../routes/RoleAuthorisation';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -105,7 +106,7 @@ const SidebarNav = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
-      {pages?.map(page => (
+      {pages?.filter(role => isAuthorized(user?.role_ids, role?.authorized))?.map(page => (
         <ListItem
           className={classes.item}
           disableGutters

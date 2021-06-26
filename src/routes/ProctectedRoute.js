@@ -1,8 +1,6 @@
-import {Login} from '../components/auth/Login/Login';
 import UserManagement from '../containers/UserManagement/UserManagement';
 import {UserProfile} from '../containers/UserManagement/Userprofile/UserProfile';
 import {Dashboard} from '../containers/Dashboard/Dashboard';
-import ViewAll from '../views/landing/view-all/ViewAll';
 import {ListCourse} from '../containers/Courses/ListCourse';
 import {AddCourse} from '../containers/Courses/AddCourse';
 
@@ -24,7 +22,7 @@ export const protectedRoutes = [
   {
     title: 'User Profile',
     path: '/profile',
-    authorized: ['Admin'],
+    authorized: ['Admin', 'Tutor'],
     component: UserProfile,
     visible: 'false',
   },
@@ -38,7 +36,7 @@ export const protectedRoutes = [
   {
     title: 'Course List',
     path: '/course/list',
-    authorized: ['Admin'],
+    authorized: ['Admin', 'Tutor'],
     component: ListCourse,
     visible: 'false',
   },

@@ -3,11 +3,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
-import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import ReorderIcon from '@material-ui/icons/Reorder';
-import CategoryIcon from '@material-ui/icons/Category';
-import ScatterPlotIcon from '@material-ui/icons/ScatterPlot';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 
 export const pages = [
   {
@@ -28,14 +24,14 @@ export const pages = [
     title: 'Courses',
     href: '/course/list',
     visible: true,
-    authorized: ['Admin'],
+    authorized: ['Admin', 'Tutor'],
     icon: <ReorderIcon/>,
   },
   {
     title: 'Profile',
     href: '/profile',
     visible: true,
-    authorized: ['Admin'],
+    authorized: ['Admin', 'Tutor'],
     icon: <AccountBoxIcon/>
   },
   {

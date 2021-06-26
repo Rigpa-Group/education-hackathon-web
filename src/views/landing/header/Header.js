@@ -12,8 +12,12 @@ import {useHistory} from 'react-router-dom';
 import {Notify, setProps} from '../../../shared/components/notification/Notification';
 import {courseCategoryApi} from '../../../services/CourseServices';
 import {useSnackbar} from 'notistack';
-import {StateContext} from '../../../store';
+import {DispatchContext, StateContext} from '../../../store';
 import Avatar from '@material-ui/core/Avatar';
+import RenderAuthorized from '../../../routes/RenderAuthorized';
+import {Menu, MenuItem} from '@material-ui/core';
+import {Link} from 'react-scroll';
+import {logout} from '../../../services/AuthServices';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
   name: {
     color: '#000',
     paddingTop: 10,
-    paddingLeft: 10
   },
   profile: {
     display: 'flex'
@@ -48,6 +51,8 @@ export default function Header() {
   const snackbar = useSnackbar();
   const [inputSearch, setInputSearch] = useState('');
   const {user} = useContext(StateContext);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const dispatch = useContext(DispatchContext);
 
   useEffect(() => {
     setProps(snackbar);
@@ -66,6 +71,31 @@ export default function Header() {
 
   const truncate = (str) => {
     return str?.length > 1 ? str?.substring(0, 1) + '' : str;
+  };
+
+  const handleAdminDashboard = () => {
+    history.push('/dashboard');
+  };
+
+  const handleTutorDashboard = () => {
+    history.push('/profile');
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const onSignOut = () => {
+    logout(dispatch).then(res => {
+      history.push('/login');
+      Notify('User logout successfully', 'success');
+    }).catch(err => {
+      Notify(err, 'error');
+    });
   };
 
   return (
@@ -96,10 +126,36 @@ export default function Header() {
                       onClick={() => history.push('/sign-up')}>Sign Up</Button>
             </div>
             :
-            <div className={classes.profile}>
-              <Avatar>{truncate(user?.profile_attributes?.first_name)}</Avatar>
-              <Typography
-                className={classes.name}>{user?.profile_attributes?.first_name} {''} {user?.profile_attributes?.last_name}</Typography>
+            <div>
+              <div className={classes.profile}>
+                <Avatar>{truncate(user?.profile_attributes?.first_name)}</Avatar>
+                <Link to="/login" onClick={handleClick} style={{textDecoration: 'none'}}
+                      className="head-link hand-cursor  text-capitalize">
+                  <Typography
+                    className={classes.name}>{user?.profile_attributes?.first_name} {''} {user?.profile_attributes?.last_name}
+                  </Typography>
+                </Link>
+              </div>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <RenderAuthorized authorized={['Admin']}>
+                  <MenuItem onClick={
+                    handleAdminDashboard}>Dashboard</MenuItem>
+                </RenderAuthorized>
+                <RenderAuthorized authorized={['Tutor']}>
+                  <MenuItem onClick={
+                    handleTutorDashboard}>Dashboard</MenuItem>
+                </RenderAuthorized>
+                <RenderAuthorized authorized={['Learner']}>
+                  <MenuItem>My Learning</MenuItem>
+                </RenderAuthorized>
+                <MenuItem onClick={() => onSignOut()}>Logout</MenuItem>
+              </Menu>
             </div>
           }
         </Toolbar>

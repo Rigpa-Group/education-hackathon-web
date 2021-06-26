@@ -18,6 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import {useSnackbar} from 'notistack';
 import {Notify, setProps} from '../../shared/components/notification/Notification';
 import {courseApi} from '../../services/CourseServices';
+import Moment from 'react-moment';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -46,12 +47,10 @@ export const ListCourse = () => {
   }, [page, rowsPerPage]);
 
   const fetchCourses = () => {
-    debugger
-    courseApi('get',null, {
+    courseApi('get', null, {
       page: page,
       per_page: rowsPerPage,
     }).then(response => {
-      debugger
       setTotal(response.meta.total);
       setCourses(response.courses);
     }).catch(err => Notify(err, 'error'));
@@ -88,6 +87,7 @@ export const ListCourse = () => {
               <TableCell style={{color: theme.primary, fontSize: 18}}>Sl.no</TableCell>
               <TableCell style={{color: theme.primary, fontSize: 18}}>Course Name</TableCell>
               <TableCell style={{color: theme.primary, fontSize: 18}}>Course Category</TableCell>
+              <TableCell style={{color: theme.primary, fontSize: 18}}>Created Date</TableCell>
               <TableCell style={{color: theme.primary, fontSize: 18}}>Status</TableCell>
               <TableCell/>
             </TableRow>
@@ -95,9 +95,10 @@ export const ListCourse = () => {
           <TableBody>
             {courses.length > 0 && courses?.map((course, index) => (
               <TableRow key={index}>
-                <TableCell style={{color: '#727070', fontSize: 14}}>{index+1}</TableCell>
+                <TableCell style={{color: '#727070', fontSize: 14}}>{index + 1}</TableCell>
                 <TableCell style={{color: '#727070', fontSize: 14}}>{course?.name}</TableCell>
                 <TableCell style={{color: '#727070', fontSize: 14}}>{course?.course_category?.name}</TableCell>
+                <TableCell style={{color: '#727070', fontSize: 14}}><Moment format="LL" withTitle>{course?.created_at}</Moment></TableCell>
                 <TableCell style={{color: '#727070', fontSize: 14}}>{course?.status}</TableCell>
                 <TableCell>
                   <Tooltip title="Detail">

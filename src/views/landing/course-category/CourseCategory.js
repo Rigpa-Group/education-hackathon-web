@@ -1,9 +1,10 @@
 import React from 'react';
-import {Card, CardActionArea, CardContent, CardMedia, Container, makeStyles} from '@material-ui/core';
+import {Card, CardActionArea, CardContent, Container, makeStyles} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import './CourseCategory.scss';
 import Box from '@material-ui/core/Box';
+import {Player} from 'video-react';
 import Rating from '@material-ui/lab/Rating';
 
 const useStyles = makeStyles({
@@ -29,10 +30,8 @@ export default function CourseCategory() {
           <Grid item lg={3}>
             <Card className={classes.root}>
               <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  image={require('../../../assets/images/categoryImg.png').default}
-                  title="Contemplative Reptile"/>
+                <Player className={classes.media} poster='/assets/images/categoryImg.png'
+                        src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4" playsInline/>
                 <CardContent>
                   <Typography gutterBottom className='title' component="h2">
                     Annual Merek Sakten Festival

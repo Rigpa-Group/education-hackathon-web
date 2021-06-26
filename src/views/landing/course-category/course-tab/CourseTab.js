@@ -78,13 +78,13 @@ export default function CourseTab() {
         <CourseCategory/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <CourseCategory/>
       </TabPanel>
       <TabPanel value={value} index={2}>
         <CourseCategory/>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Item four
+        <CourseCategory/>
       </TabPanel>
       <TabPanel value={value} index={4}>
         <CourseCategory/>

@@ -52,7 +52,8 @@ export default function Header() {
               id="combo-box-demo"
               options={categoryList}
               getOptionLabel={(option) => option.title}
-              renderInput={(params) => <TextField {...params} placeholder='Category' variant="outlined"/>}
+              renderInput={(params) => <TextField {...params} placeholder='Category'
+                                                 size="small" variant="outlined"/>}
             />
           </div>
           <div className='search'>

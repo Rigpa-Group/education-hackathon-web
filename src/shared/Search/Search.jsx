@@ -7,7 +7,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    borderRadius: '4px',
+    borderRadius: '5px',
     alignItems: 'center',
     padding: theme.spacing(1),
     display: 'flex',

@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CourseDetail() {
+export default function CourseDetail({index}) {
   const classes = useStyles();
   const snackbar = useSnackbar();
   const params = useParams();

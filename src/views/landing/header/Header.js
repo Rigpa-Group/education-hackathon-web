@@ -116,7 +116,7 @@ export default function Header() {
             />
           </div>
           <div className="search">
-            <Search/>
+            <Search placeholder="Search anything"/>
           </div>
           {!user.authenticated ?
             <div>

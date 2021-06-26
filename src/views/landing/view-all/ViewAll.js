@@ -68,10 +68,10 @@ export default function ViewAll() {
             <Grid item lg={3}>
               <Card className={classes.root}>
                 <CardActionArea>
-                  <Player className={classes.media} poster='/assets/allImage.jpeg'
+                  <Player className={classes.media} poster={course?.course_photo?.medium ?? `/assets/categoryImg.png`}
                           src="/assets/video.mp4" playsInline/>
                   <CardContent>
-                    <Typography gutterBottom className='title' component="h2">
+                    <Typography gutterBottom className='title text-capitalize' component="h2">
                       {course?.name}
                     </Typography>
                     <Box component="fieldset" borderColor="transparent">
@@ -86,31 +86,29 @@ export default function ViewAll() {
               </Card>
             </Grid>
           )) :
-          <Grid container>
-            <Grid container spacing={3}>
-              {[1, 2, 3, 4].map(val => (
-                <Grid item lg={3} xs={6} className="mt-4" key={val}>
-                  <SkeletonTheme color="#e8eaed" highlightColor="#c8cccc">
-                    <Skeleton delay={1} duration={2} height={150} style={{borderRadius: 3}}/>
-                    <Typography>
-                      <Skeleton delay={1} duration={2} height={15} width={'90%'}/>
-                      <Skeleton delay={1} duration={2} height={15} width={'100%'}/>
-                      <Skeleton delay={1} duration={2} height={15} width={150}/>
-                    </Typography>
-                  </SkeletonTheme>
-                </Grid>))}
-              {[1, 2, 3, 4].map(val => (
-                <Grid item lg={3} xs={6} className="mt-4" key={val}>
-                  <SkeletonTheme color="#e8eaed" highlightColor="#c8cccc">
-                    <Skeleton delay={1} duration={2} height={150} style={{borderRadius: 3}}/>
-                    <Typography>
-                      <Skeleton delay={1} duration={2} height={15} width={'90%'}/>
-                      <Skeleton delay={1} duration={2} height={15} width={'100%'}/>
-                      <Skeleton delay={1} duration={2} height={15} width={150}/>
-                    </Typography>
-                  </SkeletonTheme>
-                </Grid>))}
-            </Grid>
+          <Grid container spacing={3}>
+            {[1, 2, 3, 4].map(val => (
+              <Grid item lg={3} xs={6} className="mt-4" key={val}>
+                <SkeletonTheme color="#e8eaed" highlightColor="#c8cccc">
+                  <Skeleton delay={1} duration={2} height={150} style={{borderRadius: 3}}/>
+                  <Typography>
+                    <Skeleton delay={1} duration={2} height={15} width={'90%'}/>
+                    <Skeleton delay={1} duration={2} height={15} width={'100%'}/>
+                    <Skeleton delay={1} duration={2} height={15} width={150}/>
+                  </Typography>
+                </SkeletonTheme>
+              </Grid>))}
+            {[1, 2, 3, 4].map(val => (
+              <Grid item lg={3} xs={6} className="mt-4" key={val}>
+                <SkeletonTheme color="#e8eaed" highlightColor="#c8cccc">
+                  <Skeleton delay={1} duration={2} height={150} style={{borderRadius: 3}}/>
+                  <Typography>
+                    <Skeleton delay={1} duration={2} height={15} width={'90%'}/>
+                    <Skeleton delay={1} duration={2} height={15} width={'100%'}/>
+                    <Skeleton delay={1} duration={2} height={15} width={150}/>
+                  </Typography>
+                </SkeletonTheme>
+              </Grid>))}
           </Grid>}
       </Grid>
       <div className={classes.pagination}>

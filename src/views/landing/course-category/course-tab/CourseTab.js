@@ -104,7 +104,7 @@ export default function CourseTab() {
       <TabPanel value={value} index={3}>
         <CourseCategory/>
       </TabPanel>
-      <TabPanel value={value} index={5}>
+      <TabPanel value={value} index={4}>
         <CourseCategory/>
       </TabPanel>
     </Container>

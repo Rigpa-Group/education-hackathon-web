@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CourseDetailTab() {
+export default function CourseDetailTab({course}) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -67,7 +67,7 @@ export default function CourseDetailTab() {
         </Tabs>
       </div>
       <TabPanel value={value} index={0}>
-        <CourseDescription/>
+        <CourseDescription course={course}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <QuestionAndAnswer/>

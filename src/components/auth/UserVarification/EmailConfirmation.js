@@ -16,7 +16,11 @@ export default function EmailConfirmation() {
   useEffect(() => {
     setProps(snackbar);
     emailConfirmation({confirmation_token: token}, dispatch).then(response => {
-      history.push('/dashboard');
+      if (response.user?.role_ids?.[0]?.name === 'Admin') {
+        history.push('/dashboard');
+      } else {
+        history.push('/');
+      }
       Notify('User confirmed successfully', 'success');
     }).catch(err => {
       history.push('/login');

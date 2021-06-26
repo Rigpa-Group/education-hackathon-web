@@ -29,19 +29,24 @@ export default function CourseDetail({index}) {
   const snackbar = useSnackbar();
   const params = useParams();
   const [course, setCourse] = useState({});
-  const [image, setImage] = useState({});
   const [video, setVideo] = useState({});
+  const [unit, setUnit] = useState({});
 
   useEffect(() => {
     setProps(snackbar);
     fetchCourse();
   }, []);
 
+  const handleContent = (videoData, unitData) => {
+    setVideo(videoData);
+    setUnit(unitData);
+  };
+
   const fetchCourse = () => {
     courseAction('get', params?.id).then(response => {
       setCourse(response.course);
-      setImage(response.course?.course_units_attributes?.[0]?.photo?.large);
-      setVideo(response.course?.course_units_attributes?.[0]?.videos_attributes?.[0]?.clip_url);
+      setVideo(response.course?.course_units_attributes?.[0]?.videos_attributes?.[0]);
+      setUnit(response.course?.course_units_attributes?.[0]);
     }).catch(err => Notify(err, 'error'));
   };
 
@@ -50,8 +55,9 @@ export default function CourseDetail({index}) {
       <Grid container spacing={2}>
         <Grid item lg={8}>
           <div style={{marginBottom: 20, marginTop: 20}}>
-            <Player className={classes.media} poster={image || `/assets/images/categoryImg.png`}
-                    src={video ?? `https://media.w3.org/2010/05/sintel/trailer_hd.mp4`} playsInline/>
+            <Player className={classes.media} poster={unit?.photo?.large || `/assets/images/categoryImg.png`}
+                    src={video?.clip_url ?? `https://media.w3.org/2010/05/sintel/trailer_hd.mp4`}
+                    playsInline/>
           </div>
           <Typography className='video-title text-capitalize'>
             {course?.name}
@@ -63,7 +69,7 @@ export default function CourseDetail({index}) {
             <Divider style={{marginTop: '2%', marginBottom: '2%'}}/>
           </div>
           <div>
-            <CourseDetailTab course={course}/>
+            <CourseDetailTab course={course} unit={unit}/>
           </div>
         </Grid>
         <Grid item lg={4}>
@@ -73,7 +79,7 @@ export default function CourseDetail({index}) {
             </Typography>
             <Divider/>
             <div>
-              <CourseVideoAccordian/>
+              <CourseVideoAccordian course={course} handleContent={handleContent}/>
             </div>
           </Card>
         </Grid>

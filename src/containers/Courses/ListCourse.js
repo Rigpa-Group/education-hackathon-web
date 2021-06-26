@@ -46,12 +46,10 @@ export const ListCourse = () => {
   }, [page, rowsPerPage]);
 
   const fetchCourses = () => {
-    debugger
     courseApi('get',null, {
       page: page,
       per_page: rowsPerPage,
     }).then(response => {
-      debugger
       setTotal(response.meta.total);
       setCourses(response.courses);
     }).catch(err => Notify(err, 'error'));

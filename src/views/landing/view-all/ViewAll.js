@@ -11,6 +11,7 @@ import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
 import {useSnackbar} from 'notistack';
 import {Notify, setProps} from '../../../shared/components/notification/Notification';
 import {courseApi} from '../../../services/CourseServices';
+import {useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -33,14 +34,16 @@ const useStyles = makeStyles({
     padding: 10
   }
 });
-const viewAll = ['1', '2', '3', '4'];
-const containerLoop = ['1', '2', '3', '4'];
+
 export default function ViewAll() {
   const classes = useStyles();
+  const history = useHistory();
   const snackbar = useSnackbar();
-  const [value, setValue] = React.useState(2);
   const [courses, setCourses] = useState([]);
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(1);
+
 
   useEffect(() => {
     setProps(snackbar);
@@ -48,13 +51,20 @@ export default function ViewAll() {
     setInterval(() => {
       setOpen(true);
     }, 2000);
-  }, []);
+  }, [page]);
 
   const fetchCourses = () => {
-    courseApi('get').then(response => {
+    courseApi('get', null, {per_page: 12, page: page}).then(response => {
+      setTotal(response.meta?.last_page);
       setCourses(response.courses);
     }).catch(err => Notify(err, 'error'));
   };
+
+  const handleChangePage = (event, page) => {
+    setOpen(false);
+    setPage(page);
+  };
+
 
   return (
     <Container>
@@ -67,7 +77,7 @@ export default function ViewAll() {
         {(open && courses.length > 0) ? courses.map(course => (
             <Grid item lg={3}>
               <Card className={classes.root}>
-                <CardActionArea>
+                <CardActionArea onClick={() => history.push(`/courses/detail/${course?.id}`)}>
                   <Player className={classes.media} poster={course?.course_photo?.medium ?? `/assets/categoryImg.png`}
                           src="/assets/video.mp4" playsInline/>
                   <CardContent>
@@ -112,7 +122,7 @@ export default function ViewAll() {
           </Grid>}
       </Grid>
       <div className={classes.pagination}>
-        <Pagination count={10} color="primary"/>
+        <Pagination count={total} page={page} onChange={handleChangePage} color="primary"/>
       </div>
     </Container>
   );

@@ -50,9 +50,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 8
   }
 }));
-export default function Review() {
+export default function Review({course}) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(2);
 
   return (
     <div>
@@ -63,15 +62,13 @@ export default function Review() {
               Student Feedback
             </Typography>
             <Typography className={classes.rating}>
-              3.7
+              {course?.average_review}
             </Typography>
           </div>
           <Rating
             name="simple-controlled"
-            value={value}
-            onChange={(event, newValue) => {
-              setValue(newValue);
-            }}
+            value={course?.average_review}
+            readOnly
           />
           <Typography className={classes.courseRating}>
             Course Rating
@@ -79,19 +76,19 @@ export default function Review() {
         </Grid>
         <Grid item lg={5}>
           <div className={classes.progressBar}>
-            <BorderLinearProgress variant="determinate" value={75}/>
+            <BorderLinearProgress variant="determinate" value={parseInt(course?.one_star)}/>
           </div>
           <div className={classes.progressBar}>
-            <BorderLinearProgress variant="determinate" value={90}/>
+            <BorderLinearProgress variant="determinate" value={parseInt(course?.two_star)}/>
           </div>
           <div className={classes.progressBar}>
-            <BorderLinearProgress variant="determinate" value={30}/>
+            <BorderLinearProgress variant="determinate" value={parseInt(course?.three_star)}/>
           </div>
           <div className={classes.progressBar}>
-            <BorderLinearProgress variant="determinate" value={50}/>
+            <BorderLinearProgress variant="determinate" value={parseInt(course?.four_star)}/>
           </div>
           <div className={classes.progressBar}>
-            <BorderLinearProgress variant="determinate" value={3}/>
+            <BorderLinearProgress variant="determinate" value={parseInt(course?.five_star)}/>
           </div>
         </Grid>
         <Grid item lg={2}>
@@ -99,46 +96,36 @@ export default function Review() {
             <div className={classes.progressStar}>
               <Rating
                 name="simple-controlled"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
+                value={1}
+                readOnly
               />
             </div>
             <div className={classes.progressStar}>
               <Rating
                 name="simple-controlled"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
+                value={2}
+                readOnly
               />
             </div>
             <div className={classes.progressStar}>
               <Rating
                 name="simple-controlled"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
+                value={3}
+                readOnly
               />
             </div>
             <div className={classes.progressStar}>
               <Rating
                 name="simple-controlled"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
+                value={4}
+                readOnly
               />
             </div>
             <div className={classes.progressStar}>
               <Rating
                 name="simple-controlled"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
+                value={5}
+                readOnly
               />
             </div>
           </div>
@@ -146,19 +133,19 @@ export default function Review() {
         <Grid item lg={2}>
           <div className={classes.negativeMargin}>
             <div className={classes.percentageBar}>
-              75%
+              {course?.one_star}%
             </div>
             <div className={classes.percentageBar}>
-              90%
+              {course?.two_star}%
             </div>
             <div className={classes.percentageBar}>
-              30%
+              {course?.three_star}%
             </div>
             <div className={classes.percentageBar}>
-              50%
+              {course?.four_star}%
             </div>
             <div className={classes.percentageBar}>
-              3%
+              {course?.five_star}%
             </div>
           </div>
         </Grid>

@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     fontSize: 34,
+    cursor: 'pointer',
     color: '#03A2A5',
     fontWeight: 700
   },
@@ -102,7 +103,7 @@ export default function Header() {
     <div className={classes.root}>
       <AppBar className={classes.appbar} position="fixed">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title} onClick={() => history.push('/')}>
             EduTech
           </Typography>
           <div className="categorylist">

@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '2%'
   }
 }));
-export default function CourseDescription({course}) {
+export default function CourseDescription({course, unit}) {
   const classes = useStyles();
   return (
     <React.Fragment>
@@ -20,7 +20,7 @@ export default function CourseDescription({course}) {
           Description
         </Typography>
         <Typography className={classes.descriptionTitle}>
-          {course?.description}
+          {course?.description || unit?.description}
         </Typography>
       </div>
     </React.Fragment>

@@ -27,7 +27,7 @@ export default function CourseDetail() {
     <Container>
       <Grid container spacing={2}>
         <Grid item lg={8}>
-          <div style={{marginBottom: 20}}>
+          <div style={{marginBottom: 20, marginTop: 20}}>
             <Player className={classes.media} poster='/assets/images/categoryImg.png'
                     src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4" playsInline/>
           </div>

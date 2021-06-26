@@ -2,8 +2,10 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
-import {Avatar, Container} from '@material-ui/core';
+import {Avatar, Container, Grid} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
+import TextField from '@material-ui/core/TextField';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 const useStyles = makeStyles((theme) => ({
   titleQuestion: {
@@ -52,9 +54,20 @@ export default function QuestionAndAnswer() {
   return (
     <React.Fragment>
       <div>
-        <Button variant={'contained'} color={'primary'}>
+        <Button variant={'contained'} color={'primary'} style={{marginBottom: 20}}>
           Ask a question
         </Button>
+        <Grid container>
+          <Grid item lg={8} xs={12}>
+            <TextField variant="outlined" label="Title" size="small" fullWidth/>
+          </Grid>
+          <Grid item lg={8} xs={12}>
+            <TextareaAutosize color={'primary'} aria-label="minimum height" rowsMin={5}
+                              placeholder="Description..." name="description"
+                              //onChange={handleChange}
+                              style={{width: '96%', padding: 10, marginTop: 15, borderColor: '#c4c4c4'}}/>
+          </Grid>
+        </Grid>
       </div>
       <div>
         <Typography className={classes.titleQuestion}>

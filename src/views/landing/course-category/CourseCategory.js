@@ -9,6 +9,7 @@ import Rating from '@material-ui/lab/Rating';
 import {Notify, setProps} from '../../../shared/components/notification/Notification';
 import {courseCategoryApi} from '../../../services/CourseServices';
 import {useSnackbar} from 'notistack';
+import {useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -25,6 +26,7 @@ const courseLoop = ['1', '2', '3', '4', '5'];
 
 export default function CourseCategory({index}) {
   const classes = useStyles();
+  const history = useHistory();
   const [value, setValue] = React.useState(2);
   const [courses, setCourses]= useState();
   const snackbar = useSnackbar();
@@ -45,7 +47,7 @@ export default function CourseCategory({index}) {
       <Grid container spacing={2}>
         {courseLoop.map(val => (
           <Grid item lg={3}>
-            <Card className={classes.root}>
+            <Card className={classes.root} onClick={() => history.push(`/courses/detail/1`)}>
               <CardActionArea>
                 <Player className={classes.media} poster='/assets/images/categoryImg.png'
                         src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4" playsInline/>

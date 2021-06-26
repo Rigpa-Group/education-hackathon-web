@@ -71,7 +71,7 @@ export default function ViewAll() {
                   <Player className={classes.media} poster='/assets/allImage.jpeg'
                           src="/assets/video.mp4" playsInline/>
                   <CardContent>
-                    <Typography gutterBottom className='title' component="h2">
+                    <Typography gutterBottom className='title text-capitalize' component="h2">
                       {course?.name}
                     </Typography>
                     <Box component="fieldset" borderColor="transparent">
@@ -86,7 +86,6 @@ export default function ViewAll() {
               </Card>
             </Grid>
           )) :
-          <Grid container>
             <Grid container spacing={3}>
               {[1, 2, 3, 4].map(val => (
                 <Grid item lg={3} xs={6} className="mt-4" key={val}>
@@ -110,8 +109,7 @@ export default function ViewAll() {
                     </Typography>
                   </SkeletonTheme>
                 </Grid>))}
-            </Grid>
-          </Grid>}
+            </Grid>}
       </Grid>
       <div className={classes.pagination}>
         <Pagination count={10} color="primary"/>

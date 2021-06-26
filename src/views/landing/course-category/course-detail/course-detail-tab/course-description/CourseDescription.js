@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '2%'
   }
 }));
-export default function CourseDescription() {
+export default function CourseDescription({course}) {
   const classes = useStyles();
   return (
     <React.Fragment>
@@ -20,22 +20,7 @@ export default function CourseDescription() {
           Description
         </Typography>
         <Typography className={classes.descriptionTitle}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid architecto aspernatur dolorem dolores eum
-          eveniet exercitationem, ipsam labore modi nemo perspiciatis possimus quae ratione rem reprehenderit velit,
-          voluptate voluptates. Fugiat?
-
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid architecto aspernatur dolorem dolores eum
-          eveniet exercitationem, ipsam labore modi nemo perspiciatis possimus quae ratione rem reprehenderit velit,
-          voluptate voluptates. Fugiat?
-
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid architecto aspernatur dolorem dolores eum
-          eveniet exercitationem, ipsam labore modi nemo perspiciatis possimus quae ratione rem reprehenderit velit,
-          voluptate voluptates. Fugiat?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid architecto aspernatur dolorem dolores eum
-          eveniet exercitationem, ipsam labore modi nemo perspiciatis possimus quae ratione rem reprehenderit velit,
-          voluptate voluptates. Fugiat?
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid architecto aspernatur dolorem dolores eum
-          eveniet exercitationem, ipsam labore modi nemo perspiciatis possimus quae ratione rem reprehenderit velit,
-          voluptate voluptates. Fugiat?
+          {course?.description}
         </Typography>
       </div>
     </React.Fragment>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Container} from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
@@ -8,6 +8,9 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import CourseCategory from '../CourseCategory';
 import './CourseTab.scss';
+import {Notify, setProps} from '../../../../shared/components/notification/Notification';
+import {courseCategoryApi} from '../../../../services/CourseServices';
+import {useSnackbar} from 'notistack';
 
 function TabPanel(props) {
   const {children, value, index, ...other} = props;
@@ -51,14 +54,28 @@ const useStyles = makeStyles((theme) => ({
 export default function CourseTab() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [categories, setCategories] = useState();
+  const snackbar = useSnackbar();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    setProps(snackbar);
+    fetchCourseCategories();
+  }, []);
+
+  const fetchCourseCategories = () => {
+    courseCategoryApi('get').then(response => {
+      setCategories(response.course_categories);
+    }).catch(err => Notify(err, 'error'));
+  };
+
   return (
     <Container className={classes.root}>
-      <Container className='container-main'>
-        <Typography className='title1'>
+      <Container className="container-main">
+        <Typography className="title1">
           The Bhutan’s largest selection of courses
         </Typography>
         <Typography className="description1">
@@ -67,16 +84,11 @@ export default function CourseTab() {
       </Container>
       <div position="static">
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-          <Tab label="Dzongkha" {...a11yProps(0)} />
-          <Tab label="English" {...a11yProps(1)} />
-          <Tab label="Maths" {...a11yProps(2)} />
-          <Tab label="Nursery" {...a11yProps(3)} />
-          <Tab label="Science" {...a11yProps(4)} />
+          {categories?.length && categories?.map((category, index) => (
+            <Tab label={`${category?.name}`}{...a11yProps(1)} />
+          ))}
         </Tabs>
       </div>
-      <TabPanel value={value} index={0}>
-        <CourseCategory/>
-      </TabPanel>
       <TabPanel value={value} index={1}>
         <CourseCategory/>
       </TabPanel>
@@ -87,6 +99,9 @@ export default function CourseTab() {
         <CourseCategory/>
       </TabPanel>
       <TabPanel value={value} index={4}>
+        <CourseCategory/>
+      </TabPanel>
+      <TabPanel value={value} index={5}>
         <CourseCategory/>
       </TabPanel>
     </Container>

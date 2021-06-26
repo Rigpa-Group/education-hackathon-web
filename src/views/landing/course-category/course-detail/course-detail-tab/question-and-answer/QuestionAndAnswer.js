@@ -1,11 +1,18 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
+import {Field, Form, Formik} from 'formik';
 import {Avatar, Container, Grid} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
-import TextField from '@material-ui/core/TextField';
+import {TextField} from 'formik-material-ui';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import {Answer} from './Answer';
+import * as Yup from 'yup';
+import {courseQuestionsApi} from '../../../../../../services/CourseServices';
+import {useSnackbar} from 'notistack';
+import {Notify, setProps} from '../../../../../../shared/components/notification/Notification';
+import {avatarTruncate, truncate} from '../../../../../../shared/functions/TextTruncate';
 
 const useStyles = makeStyles((theme) => ({
   titleQuestion: {
@@ -39,66 +46,129 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 10
   },
   avaterCharacter: {
-    fontSize: 30
+    fontSize: 30,
+    textTransform: 'capitalize',
   },
   viewMore: {
     display: 'flex',
     justifyContent: 'flex-end'
-  }
+  },
 }));
 
-const questionLoop = ['1', '2', '3', '4'];
+const validationSchema = Yup.object().shape({
+  question: Yup.string().required('Field is required'),
+  description: Yup.string().required('Field is required'),
+});
 
-export default function QuestionAndAnswer() {
+export default function QuestionAndAnswer({course, unit, handleAction}) {
   const classes = useStyles();
+  const snackbar = useSnackbar();
+  const [show, setShow] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [question, setQuestion] = useState({});
+
+  useEffect(() => {
+    setProps(snackbar);
+  }, []);
+
+  const handleShow = () => {
+    setShow(!show);
+  };
+
+  const questionDetail = (data) => {
+    setQuestion(data);
+    setOpen(!open);
+  };
+
+  const handleActionAnswer = () => {
+    setOpen(false);
+  }
+
+  const handleSubmitQuestion = (values, {setSubmitting, resetForm}) => {
+    courseQuestionsApi('post', course?.id, unit?.id, {question: {...values}}).then(response => {
+      setSubmitting(false);
+      handleAction(true);
+      setShow(!show);
+      Notify('Question uploaded successfully', 'success');
+      resetForm();
+    }).catch(err => {
+      setSubmitting(false);
+      Notify(err, 'error');
+    });
+  };
+
   return (
     <React.Fragment>
-      <div>
-        <Button variant={'contained'} color={'primary'} style={{marginBottom: 20}}>
-          Ask a question
-        </Button>
-        <Grid container>
-          <Grid item lg={8} xs={12}>
-            <TextField variant="outlined" label="Title" size="small" fullWidth/>
-          </Grid>
-          <Grid item lg={8} xs={12}>
-            <TextareaAutosize color={'primary'} aria-label="minimum height" rowsMin={5}
-                              placeholder="Description..." name="description"
-                              //onChange={handleChange}
-                              style={{width: '96%', padding: 10, marginTop: 15, borderColor: '#c4c4c4'}}/>
-          </Grid>
-        </Grid>
-      </div>
-      <div>
-        <Typography className={classes.titleQuestion}>
-          Questions in this course (4)
-        </Typography>
-      </div>
-      <Divider/>
-      {questionLoop.map(val => (
-        <Container className={classes.people}>
-          <Avatar style={{width: 60, height: 60}}>
-            <span className={classes.avaterCharacter}>P</span>
-          </Avatar>
-          <div className={classes.inlineFlex}>
-            <Typography className={classes.lernerName}>
-              Pema Dema
-            </Typography>
-            <Typography className={classes.questionTitle}>
-              My point of view in a better way, instead of use it
-            </Typography>
-            <Typography className={classes.questionDetail}>
-              I think it's better to use an array with the routes instead of using for loop multiple times.
+      {!open ?
+        <div>
+          <div>
+            <Button onClick={() => handleShow()} variant={'contained'} color={'primary'} style={{marginBottom: 20}}>
+              Ask a question
+            </Button>
+            {show &&
+            <Formik initialValues={{question: '', description: ''}} onSubmit={handleSubmitQuestion}
+                    validationSchema={validationSchema}>
+              {({
+                  handleChange,
+                  handleBlur,
+                  values, errors,
+                  ...formik
+                }) => (
+                <Form>
+                  <Grid container>
+                    <Grid item lg={8} xs={12}>
+                      <Field component={TextField} variant="outlined" name="question" label="Question?" size="small"
+                             fullWidth/>
+                    </Grid>
+                    <Grid item lg={8} xs={12}>
+                      <Field component={TextareaAutosize} color={'primary'} aria-label="minimum height" rowsMin={5}
+                             placeholder="Question Description..." name="description"
+                             onChange={(e) => formik.setFieldValue('description', e?.target?.value)}
+                             style={{width: '96%', padding: 10, marginTop: 15, borderColor: '#c4c4c4'}}/>
+                    </Grid>
+                    <Grid item lg={8} xs={12}>
+                      <Button variant="contained" color="primary" type="submit">Add Questions</Button>
+                    </Grid>
+                  </Grid>
+                </Form>
+              )}
+            </Formik>}
+          </div>
+          <div>
+            <Typography className={classes.titleQuestion}>
+              Questions in this course ({unit?.questions_attributes?.length})
             </Typography>
           </div>
-        </Container>
-      ))}
-      <Divider/>
-      <div className={classes.viewMore}>
-        <Button>
-          View more
-        </Button>
-      </div>
+          <Divider/>
+          {unit?.questions_attributes?.length > 0 && unit?.questions_attributes?.map(question => (
+            <Container className={classes.people} key={question?.id} onClick={() => questionDetail(question)}>
+              <Avatar style={{width: 60, height: 60}}>
+                <span
+                  className={classes.avaterCharacter}>
+                  {avatarTruncate(question?.user?.profile_attributes?.first_name, 1)}
+                </span>
+              </Avatar>
+              <div className={classes.inlineFlex}>
+                <Typography className={classes.lernerName}>
+                  {question?.user?.profile_attributes?.first_name || 'Edu'} {question?.user?.profile_attributes?.last_name || 'User'}
+                </Typography>
+                <Typography className={classes.questionTitle}>
+                  {question?.question}
+                </Typography>
+                <Typography className={classes.questionDetail}>
+                  {truncate(question?.description, 200)}
+                </Typography>
+              </div>
+            </Container>
+          ))}
+          <Divider/>
+          {unit?.questions_attributes?.length > 6 &&
+          <div className={classes.viewMore}>
+            <Button>
+              View more
+            </Button>
+          </div>}
+        </div> : <Answer question={question} course={course} unit={unit} handleAction={handleActionAnswer}/>}
     </React.Fragment>
   );
 }

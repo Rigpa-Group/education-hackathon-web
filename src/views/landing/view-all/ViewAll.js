@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Card, CardActionArea, CardContent, Container, makeStyles} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -12,6 +12,7 @@ import {useSnackbar} from 'notistack';
 import {Notify, setProps} from '../../../shared/components/notification/Notification';
 import {courseApi} from '../../../services/CourseServices';
 import {useHistory} from 'react-router-dom';
+import {StateContext} from '../../../store';
 
 const useStyles = makeStyles({
   root: {
@@ -38,6 +39,7 @@ const useStyles = makeStyles({
 export default function ViewAll() {
   const classes = useStyles();
   const history = useHistory();
+  const {user} = useContext(StateContext);
   const snackbar = useSnackbar();
   const [courses, setCourses] = useState([]);
   const [open, setOpen] = useState(false);
@@ -65,6 +67,14 @@ export default function ViewAll() {
     setPage(page);
   };
 
+  const viewDetail = (cid) => {
+    if (user?.authenticated) {
+      history.push(`/courses/detail/${cid}`);
+    } else {
+      Notify('You must have to sign to avail this services', 'error');
+      history.push(`/login`);
+    }
+  };
 
   return (
     <Container>
@@ -77,7 +87,7 @@ export default function ViewAll() {
         {(open && courses.length > 0) ? courses.map(course => (
             <Grid item lg={3}>
               <Card className={classes.root}>
-                <CardActionArea onClick={() => history.push(`/courses/detail/${course?.id}`)}>
+                <CardActionArea onClick={() => viewDetail(course?.id)}>
                   <Player className={classes.media} poster={course?.course_photo?.medium ?? `/assets/categoryImg.png`}
                           src="/assets/video.mp4" playsInline/>
                   <CardContent>

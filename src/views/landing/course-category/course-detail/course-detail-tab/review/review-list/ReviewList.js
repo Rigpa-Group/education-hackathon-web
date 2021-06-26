@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import {Avatar, Container} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import {reviewCoursesApi} from '../../../../../../../services/CourseServices';
+import {Notify} from '../../../../../../../shared/components/notification/Notification';
+import {avatarTruncate} from '../../../../../../../shared/functions/TextTruncate';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,36 +39,46 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const reviewLoop = ['1', '2', '3', '4'];
 
-export default function ReviewList() {
+export default function ReviewList({course, unit}) {
   const classes = useStyles();
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    reviewCoursesApi('get', course?.id).then(response => {
+      setReviews(response?.reviews);
+    }).catch(err => Notify(err, 'error'));
+  }, []);
+
   return (
     <div className={classes.root}>
       <Typography className={classes.titleReview}>
         Review
       </Typography>
-      {reviewLoop.map(val => (
+      {reviews?.length > 0 && reviews?.map(review => (
         <Container className={classes.reviewRow}>
           <Avatar style={{width: 60, height: 60}}>
-            <span className={classes.avatarReview}>P</span>
+            <span className={classes.avatarReview}>
+              {avatarTruncate(review?.user?.profile_attributes?.first_name, 1)}
+            </span>
           </Avatar>
           <div className={classes.inlineFlex}>
             <Typography className={classes.reviewName}>
-              Pema Dema
+              {review?.user?.profile_attributes?.first_name} {review?.user?.profile_attributes?.last_name}
             </Typography>
             <Typography className={classes.reviewDescription}>
-              I think it's better to use an array with the routes instead of using for loop multiple times.
+              {review?.comment}
             </Typography>
           </div>
         </Container>
       ))}
       <Divider/>
+      {reviews.length > 6 &&
       <div className={classes.moveRight}>
         <Button>
           View more
         </Button>
-      </div>
+      </div>}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import './FirstStripe.scss';
 import Typography from '@material-ui/core/Typography';
 import LiveHelpIcon from '@material-ui/icons/LiveHelp';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -51,12 +52,14 @@ export default function FirstStripe() {
             <div className="item-flex">
               <PermIdentityIcon className={classes.large}/>
               <div className='item-inline'>
-                <Typography className='title'>
-                  Dont have an account?
+                <Link to={`/sign-up?tutor=${true}`} style={{color: 'white', textDecoration: 'none'}}>
+                <Typography className='instructor-login'>
+                  Be instructor on EduTech?
                 </Typography>
-                <Typography className='description'>
-                  Sign up with EduTch to explore more
+                <Typography className='description-instructor'>
+                    Sign up with EduTch
                 </Typography>
+                </Link>
               </div>
             </div>
           </Grid>

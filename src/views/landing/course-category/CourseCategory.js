@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Card, CardActionArea, CardContent, Container, makeStyles} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -11,6 +11,7 @@ import {courseApi} from '../../../services/CourseServices';
 import {useSnackbar} from 'notistack';
 import {useHistory} from 'react-router-dom';
 import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
+import {StateContext} from '../../../store';
 
 const useStyles = makeStyles({
   root: {
@@ -27,8 +28,8 @@ const courseLoop = ['1', '2', '3', '4'];
 
 export default function CourseCategory({index}) {
   const classes = useStyles();
+  const {user} = useContext(StateContext);
   const history = useHistory();
-  const [value, setValue] = React.useState(2);
   const [courses, setCourses] = useState([]);
   const [open, setOpen] = useState(false);
   const snackbar = useSnackbar();
@@ -47,13 +48,22 @@ export default function CourseCategory({index}) {
     }).catch(err => Notify(err, 'error'));
   };
 
+  const viewDetail = (cid) => {
+    if (user?.authenticated) {
+      history.push(`/courses/detail/${cid}`);
+    } else {
+      Notify('You must have to sign to avail this services', 'error');
+      history.push(`/login`);
+    }
+  };
+
   return (
     <Container>
       <Grid container spacing={2}>
         {open && courses.length > 0 ? courses.map((course) => (
           <Grid item lg={3} key={course?.id}>
-            <Card className={classes.root} onClick={() => history.push(`/courses/detail/${course?.id}`)}>
-              <CardActionArea>
+            <Card className={classes.root}>
+              <CardActionArea onClick={() => viewDetail(course?.id)}>
                 <Player className={classes.media} poster={course?.course_photo?.medium ?? `/assets/categoryImg.png`}
                         src="/assets/video.mp4" playsInline/>
                 <CardContent>

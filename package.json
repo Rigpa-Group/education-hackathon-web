@@ -17,6 +17,7 @@
     "formik": "^2.2.9",
     "formik-material-ui": "^3.0.1",
     "history": "^5.0.0",
+    "moment": "^2.29.1",
     "node-sass": "^4.0.0",
     "notistack": "^1.0.9",
     "object-to-formdata": "^4.1.0",

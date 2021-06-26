@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
 import {Rating} from '@material-ui/lab';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import ReviewList from './review-list/ReviewList';
+import {reviewCoursesApi} from '../../../../../../services/CourseServices';
+import {Notify} from '../../../../../../shared/components/notification/Notification';
 
 const BorderLinearProgress = withStyles((theme) => ({
   root: {
@@ -50,8 +52,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 8
   }
 }));
-export default function Review({course}) {
+export default function Review({course, unit}) {
   const classes = useStyles();
+
 
   return (
     <div>
@@ -150,7 +153,7 @@ export default function Review({course}) {
           </div>
         </Grid>
       </Grid>
-      <ReviewList/>
+      <ReviewList course={course} unit={unit}/>
     </div>
   );
 }

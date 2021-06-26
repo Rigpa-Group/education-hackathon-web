@@ -4,7 +4,7 @@ import '../../../assets/stylesheets/_utility.scss';
 import './Signup.scss';
 import 'date-fns';
 import {TextField} from 'formik-material-ui';
-import {Link, useHistory} from 'react-router-dom';
+import {Link, useHistory, useLocation} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import {Field, Form, Formik} from 'formik';
 import {usersApi} from '../../../services/UserServices';
@@ -18,6 +18,9 @@ import {gender} from '../../../shared/functions/SharedModels';
 
 export default function SignUp() {
   const history = useHistory();
+  const location = useLocation();
+  const urlParams = new URLSearchParams(location.search);
+  const isTutor = urlParams.get('tutor');
   const snackbar = useSnackbar();
   setProps(snackbar);
   const [passwordValues, setPasswordValues] = React.useState({showPassword: false, showCpassword: false,});
@@ -26,7 +29,7 @@ export default function SignUp() {
     phone: '',
     profile_attributes: {first_name: '', last_name: '', gender: ''},
     password: '',
-    role_ids: [2]
+    role_ids: [isTutor ? 1 : 2]
   };
 
   const onSignUp = (values, {setSubmitting}) => {
@@ -86,7 +89,8 @@ export default function SignUp() {
                     onChange={(e, value) => formik.setFieldValue('profile_attributes.gender', value?.value)}
                     style={{width: '100%', marginTop: 10}}
                     renderInput={(params) => <Field component={TextField} name="profile_attributes.gender"
-                                                    {...params} label="Gender" required variant="outlined" margin="dense"/>}
+                                                    {...params} label="Gender" required variant="outlined"
+                                                    margin="dense"/>}
                   />
                   <Field component={TextField} name="password" label="Password" variant="outlined" required
                          type={passwordValues.showPassword ? 'text' : 'password'} fullWidth margin="dense"
@@ -102,7 +106,8 @@ export default function SignUp() {
                            </InputAdornment>,
                          }}
                          style={{marginTop: 10}}/>
-                  <Field component={TextField} name="confirmation_password" margin="dense" label="Confirm Password" required
+                  <Field component={TextField} name="confirmation_password" margin="dense" label="Confirm Password"
+                         required
                          type={passwordValues.showCpassword ? 'text' : 'password'}
                          variant="outlined" fullWidth
                          InputProps={{

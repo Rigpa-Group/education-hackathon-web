@@ -29,3 +29,24 @@ export const courseAction = (method, id, payload = null, params = null) => {
     return response.data;
   });
 };
+
+/*Questions api*/
+export const courseQuestionsApi = (method, id, uid, payload = null, params = null) => {
+  return baseApi(`/courses/${id}/course_units/${uid}/questions`, method, params, payload).then(response => {
+    return response.data;
+  });
+};
+
+/*Answers api*/
+export const courseAnswersApi = (method, id, uid, qid, payload = null, params = null) => {
+  return baseApi(`/courses/${id}/course_units/${uid}/questions/${qid}/answers`, method, params, payload).then(response => {
+    return response.data;
+  });
+};
+
+/*Reviews api*/
+export const reviewCoursesApi = (method, id, payload = null, params = null) => {
+  return baseApi(`/courses/${id}/reviews`, method, params, payload).then(response => {
+    return response.data;
+  });
+};

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Grid} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
@@ -49,16 +49,16 @@ export const SingleImageUpload = (props) => {
   const classes = useStyles();
   const snackbar = useSnackbar();
   const {setFieldValue} = useFormikContext();
-  const {photos, url, id, text} = props;
+  const {courseIndex} = props;
   const [image, setImage] = useState(null);
 
   const handleUpload = (files) => {
-    setFieldValue(`photo_attributes.image`, files[0]);
-    setImage({attributes: {medium: URL.createObjectURL(files?.[0])}});
+    setFieldValue(`course_units_attributes[${courseIndex}].photo_attributes.image`, files[0]);
+    setImage({image: URL.createObjectURL(files?.[0])});
   };
 
   const handleDeleteImg = (img) => {
-    setFieldValue(`photo_attributes`, null);
+    setFieldValue(`course_units_attributes[${courseIndex}].photo_attributes`, null);
     setImage(null);
   };
 
@@ -72,7 +72,7 @@ export const SingleImageUpload = (props) => {
                 <div>
                   <CloudUploadIcon className={classes.iconFont}/>
                 </div>
-                <Typography variant="h6">{text}</Typography>
+                <Typography variant="h6">{'Upload Image'}</Typography>
                 <input
                   onChange={(e) => handleUpload(e.currentTarget?.files)}
                   type="file" accept="image/*"
@@ -81,7 +81,7 @@ export const SingleImageUpload = (props) => {
               </label>
             </Grid> :
             <Grid item xs={12} lg={7} align="center">
-              <img className={classes.preview} src={image?.attributes?.medium} alt=""/>
+              <img className={classes.preview} src={image?.image} alt=""/>
               <CloseIcon className={classes.closeIcon} onClick={() => handleDeleteImg(image)}/>
             </Grid>
           }

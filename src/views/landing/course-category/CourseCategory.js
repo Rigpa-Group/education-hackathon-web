@@ -35,7 +35,7 @@ export default function CourseCategory({index}) {
   }, []);
 
   const fetchCourses = () => {
-    courseCategoryApi('get',null, {category: index}).then(response => {
+    courseCategoryApi('get').then(response => {
       setCourses(response.courses);
     }).catch(err => Notify(err, 'error'));
   };

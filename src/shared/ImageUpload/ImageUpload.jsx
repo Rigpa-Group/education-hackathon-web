@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import {useSnackbar} from 'notistack';
 import {useFormikContext} from 'formik';
 import CloseIcon from '@material-ui/icons/Close';
+import {Notify, setProps} from '../components/notification/Notification';
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -46,33 +47,51 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const SharedImageUpload = (props) => {
-  //const {values, handleChange, setFieldValue, errors} = useFormikContext();
+  const {courseIndex} = props;
+  const {values, handleChange, setFieldValue, errors} = useFormikContext();
   const classes = useStyles();
   const snackbar = useSnackbar();
-  const {photos, url, id} = props;
-  const [images, setImages] = useState([]);
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    setProps(snackbar);
+  }, []);
+
+  const handleUpload = (files) => {
+    if (videos.length < 5 && files.length > 0) {
+      setFieldValue(`course_units_attributes[${courseIndex}].videos_attributes[${videos.length}].clip`, files[0]);
+      videos.push({clip: URL.createObjectURL(files?.[0])});
+    } else {
+      Notify('You can upload only upto 5 images', 'error');
+    }
+  };
+
+  const handleDeleteVideo = (img, index) => {
+    videos.splice(index, 1);
+    values.course_units_attributes[courseIndex].videos_attributes.splice(index, 1);
+    setVideos([videos]);
+  };
 
   return (
     <React.Fragment>
       <div className={classes.border}>
         <Grid container spacing={4}>
-          {images.map((image, index) => (
+          {videos.map((video, index) => (
             <Grid item xs={3} lg={3} key={index}>
-              <img className={classes.preview} src={image?.attributes?.medium} alt=""/>
-              <CloseIcon className={classes.closeIcon} />
+              <video className={classes.preview} src={video?.clip}/>
+              <CloseIcon className={classes.closeIcon} onClick={() => handleDeleteVideo(video, index)}/>
             </Grid>
           ))}
-          {images.length > 0 ?
-            <Grid item lg={4} xs={6} align="center">
+          {videos.length > 0 ?
+            <Grid item lg={6} xs={6} align="center">
               <label className={classes.button}>
                 <div>
                   <CloudUploadIcon className={classes.icon} fontSize="large"/>
                 </div>
-                Upload Picture
+                Upload Videos
                 <input
-                  multiple
-                  //onChange={(e) => handleUpload(e.currentTarget?.files)}
-                  type="file" accept="image/*"
+                  onChange={(e) => handleUpload(e.currentTarget?.files)}
+                  type="file" accept="video/*"
                   hidden
                 />
               </label>
@@ -84,9 +103,8 @@ export const SharedImageUpload = (props) => {
                 </div>
                 <Typography variant="h6">Upload Videos</Typography>
                 <input
-                  multiple
-                  //onChange={(e) => handleUpload(e.currentTarget?.files)}
-                  type="file" accept="image/*"
+                  onChange={(e) => handleUpload(e.currentTarget?.files)}
+                  type="file" accept="video/*"
                   hidden
                 />
               </label>
@@ -94,9 +112,10 @@ export const SharedImageUpload = (props) => {
           }
         </Grid>
       </div>
+      {errors?.course_units_attributes?.[courseIndex]?.videos_attributes?.length > 0 &&
       <Typography variant="subtitle2">
         <span style={{color: '#eb4326'}}>Image field is required</span>
-      </Typography>
+      </Typography>}
     </React.Fragment>
   );
 };

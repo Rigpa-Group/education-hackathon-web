@@ -1,5 +1,11 @@
 import {baseApi} from '../utils/ApiUtils';
 
+export const eduLevelsApi = (method, payload = null, params = null) => {
+  return baseApi(`/education_levels`, method, params, payload).then(response => {
+    return response.data;
+  });
+};
+
 export const courseCategoryApi = (method, payload = null, params = null) => {
   return baseApi(`/course_categories`, method, params, payload).then(response => {
     return response.data;

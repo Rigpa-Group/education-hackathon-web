@@ -10,7 +10,6 @@ import {Autocomplete} from '@material-ui/lab';
 import TextField from '@material-ui/core/TextField';
 import {useHistory} from 'react-router-dom';
 import {Notify, setProps} from '../../../shared/components/notification/Notification';
-import {fetchUsers} from '../../../containers/UserManagement/UserServicesList';
 import {courseCategoryApi} from '../../../services/CourseServices';
 import {useSnackbar} from 'notistack';
 
@@ -45,7 +44,7 @@ export default function Header() {
   }, [inputSearch]);
 
   const fetchAdminUsers = () => {
-    courseCategoryApi('get',null,{q: inputSearch}).then(response => {
+    courseCategoryApi('get', null, {q: inputSearch}).then(response => {
       setCategories(response.course_categories);
     }).catch(err => Notify(err, 'error'));
   };
@@ -68,14 +67,16 @@ export default function Header() {
               getOptionLabel={(option) => option.name}
               onInputChange={(e, value) => handleInputChange(value)}
               renderInput={(params) => <TextField {...params} placeholder='Category'
-                                                 size="small" variant="outlined"/>}
+                                                  size="small" variant="outlined"/>}
             />
           </div>
           <div className='search'>
-            <Search/>
+            <Search placeholder="Search anything"/>
           </div>
-          <Button className={classes.blackColor} variant={'outlined'} color="inherit" onClick={() => history.push('/login')}>Login</Button>
-          <Button style={{marginLeft: 12}} variant={'contained'} color="primary" onClick={() => history.push('/sign-up')}>Sign Up</Button>
+          <Button className={classes.blackColor} variant={'outlined'} color="inherit"
+                  onClick={() => history.push('/login')}>Login</Button>
+          <Button style={{marginLeft: 12}} variant={'contained'} color="primary"
+                  onClick={() => history.push('/sign-up')}>Sign Up</Button>
         </Toolbar>
       </AppBar>
     </div>

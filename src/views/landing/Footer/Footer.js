@@ -16,7 +16,7 @@ export const Footer = () => {
     <div>
       <div className={classes.footer}>
         <Container>
-          <p className="mt-3">Copyright @ 2021-{new Date().getFullYear()} EduTech. All rights reserved</p>
+          <p className="mt-3">Copyright @ 2021-{new Date().getFullYear()} DragonHunter. All rights reserved</p>
         </Container>
       </div>
     </div>

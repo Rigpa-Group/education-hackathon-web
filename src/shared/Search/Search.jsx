@@ -15,6 +15,8 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    marginTop: 3,
     color: theme.palette.text.secondary
   },
   input: {
@@ -33,7 +35,7 @@ const Search = props => {
     <Paper
       {...rest}
       className={clsx(classes.root, className)}
-      style={{boxShadow: 'none', border: '1px solid'}}
+      style={{boxShadow: 'none', border: '1px solid gray', borderRadius: 25, height: 23}}
     >
       <SearchIcon className={classes.icon}/>
       <Input

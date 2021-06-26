@@ -54,7 +54,7 @@ export default function CourseCategory({index}) {
           <Grid item lg={3} key={course?.id}>
             <Card className={classes.root} onClick={() => history.push(`/courses/detail/${course?.id}`)}>
               <CardActionArea>
-                <Player className={classes.media} poster='/assets/categoryImg.png'
+                <Player className={classes.media} poster={course?.course_photo?.medium ?? `/assets/categoryImg.png`}
                         src="/assets/video.mp4" playsInline/>
                 <CardContent>
                   <Typography gutterBottom className='title text-capitalize' component="h2">

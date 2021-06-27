@@ -34,11 +34,4 @@ export const pages = [
     authorized: ['Admin', 'Tutor'],
     icon: <AccountBoxIcon/>
   },
-  {
-    title: 'Settings',
-    href: '/settings',
-    visible: true,
-    authorized: ['Admin'],
-    icon: <SettingsIcon/>
-  },
 ];

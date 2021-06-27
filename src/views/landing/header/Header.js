@@ -10,7 +10,7 @@ import {Autocomplete} from '@material-ui/lab';
 import TextField from '@material-ui/core/TextField';
 import {useHistory} from 'react-router-dom';
 import {Notify, setProps} from '../../../shared/components/notification/Notification';
-import {courseCategoryApi} from '../../../services/CourseServices';
+import {eduLevelsApi} from '../../../services/CourseServices';
 import {useSnackbar} from 'notistack';
 import {DispatchContext, StateContext} from '../../../store';
 import Avatar from '@material-ui/core/Avatar';
@@ -48,8 +48,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Header() {
   const history = useHistory();
   const classes = useStyles();
-  const [categories, setCategories] = useState();
+  const [categories, setCategories] = useState([]);
   const snackbar = useSnackbar();
+  const [eduId, setEduId] = useState({});
+  const [searchQuery, setSearchQuery] = useState('');
   const [inputSearch, setInputSearch] = useState('');
   const {user} = useContext(StateContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -61,13 +63,15 @@ export default function Header() {
   }, [inputSearch]);
 
   const fetchAdminUsers = () => {
-    courseCategoryApi('get', null, {q: inputSearch}).then(response => {
-      setCategories(response.course_categories);
+    eduLevelsApi('get').then(response => {
+      setCategories(response.education_levels);
     }).catch(err => Notify(err, 'error'));
   };
 
-  const handleInputChange = (value) => {
-    setInputSearch(value);
+  const handleSearch = (value) => {
+    if (value.key === 'Enter') {
+      history.push(`/courses/search?search=${searchQuery}&eid=${eduId}`);
+    }
   };
 
   const truncate = (str) => {
@@ -111,13 +115,14 @@ export default function Header() {
               id="combo-box-demo"
               options={categories}
               getOptionLabel={(option) => option.name}
-              onInputChange={(e, value) => handleInputChange(value)}
+              onChange={(e, value) => setEduId(value?.id)}
               renderInput={(params) => <TextField {...params} placeholder="Category"
                                                   size="small" variant="outlined"/>}
             />
           </div>
           <div className="search">
-            <Search placeholder="Search anything"/>
+            <Search placeholder="Search anything" onChange={(value) => setSearchQuery(value)}
+                    handleKeypress={handleSearch}/>
           </div>
           {!user.authenticated ?
             <div>

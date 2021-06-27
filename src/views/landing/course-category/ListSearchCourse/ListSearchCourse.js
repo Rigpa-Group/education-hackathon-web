@@ -11,7 +11,7 @@ import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
 import {useSnackbar} from 'notistack';
 import {Notify, setProps} from '../../../../shared/components/notification/Notification';
 import {courseApi} from '../../../../services/CourseServices';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import {StateContext} from '../../../../store';
 
 const useStyles = makeStyles({
@@ -40,6 +40,10 @@ const useStyles = makeStyles({
 export default function ListSearchCourse() {
   const classes = useStyles();
   const history = useHistory();
+  const location = useLocation();
+  const urlParams = new URLSearchParams(location.search);
+  const searchQuery = urlParams.get('search');
+  const eId = urlParams.get('eid');
   const {user} = useContext(StateContext);
   const snackbar = useSnackbar();
   const [courses, setCourses] = useState([]);
@@ -54,10 +58,16 @@ export default function ListSearchCourse() {
     setInterval(() => {
       setOpen(true);
     }, 2000);
-  }, [page]);
+  }, [page, eId, searchQuery]);
 
   const fetchCourses = () => {
-    courseApi('get', null, {per_page: 12, page: page, status: 'approved'}).then(response => {
+    courseApi('get', null, {
+      per_page: 12,
+      page: (searchQuery === '' || searchQuery === undefined || searchQuery === null) ? page : 1,
+      status: 'approved',
+      education_id: eId,
+      q: searchQuery
+    }).then(response => {
       setTotal(response.meta?.last_page);
       setCourses(response.courses);
     }).catch(err => Notify(err, 'error'));
@@ -86,27 +96,28 @@ export default function ListSearchCourse() {
       </Container>
       <Grid container spacing={2}>
         {(open && courses.length > 0) ? courses.map(course => (
-            <Grid item lg={3}>
-              <Card className={classes.root}>
-                <CardActionArea onClick={() => viewDetail(course?.id)}>
-                  <Player className={classes.media} poster={course?.course_photo?.medium ?? `/assets/categoryImg.png`}
-                          src="/assets/video.mp4" playsInline/>
-                  <CardContent>
-                    <Typography gutterBottom className='title text-capitalize' component="h2">
-                      {course?.name}
-                    </Typography>
-                    <Box component="fieldset" borderColor="transparent">
-                      <Rating
-                        name="simple-controlled"
-                        value={course?.average_review === 0 ? 2 : course?.average_review}
-                        readOnly={true}
-                      />
-                    </Box>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-          )) :
+          <Grid item lg={3}>
+            <Card className={classes.root}>
+              <CardActionArea onClick={() => viewDetail(course?.id)}>
+                <Player className={classes.media} poster={course?.course_photo?.medium ?? `/assets/categoryImg.png`}
+                        src="/assets/video.mp4" playsInline/>
+                <CardContent>
+                  <Typography gutterBottom className='title text-capitalize' component="h2">
+                    {course?.name}
+                  </Typography>
+                  <Box component="fieldset" borderColor="transparent">
+                    <Rating
+                      name="simple-controlled"
+                      value={course?.average_review === 0 ? 2 : course?.average_review}
+                      readOnly={true}
+                    />
+                  </Box>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+        )) : (open && courses.length === 0) ?
+          <div className="bg-img" style={{marginLeft: 300}}/> :
           <Grid container spacing={3}>
             {[1, 2, 3, 4].map(val => (
               <Grid item lg={3} xs={6} className="mt-4" key={val}>
@@ -132,9 +143,10 @@ export default function ListSearchCourse() {
               </Grid>))}
           </Grid>}
       </Grid>
+      {total > 1 &&
       <div className={classes.pagination}>
         <Pagination count={total} page={page} onChange={handleChangePage} color="primary"/>
-      </div>
+      </div>}
     </Container>
   );
 }

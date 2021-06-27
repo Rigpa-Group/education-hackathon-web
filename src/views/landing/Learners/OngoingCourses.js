@@ -49,7 +49,7 @@ export const OngoingCourses = () => {
     <React.Fragment>
       {ongoingCourses?.participants?.length > 0 &&
       <Container>
-        <Typography className={classes.courseText}><u>Courses</u></Typography>
+        <Typography className={classes.courseText}><u>My Learning</u></Typography>
         <Grid container spacing={2}>
           {ongoingCourses?.participants?.map((course, index) => (
             <Grid item lg={4} xs={12} key={course?.id}>

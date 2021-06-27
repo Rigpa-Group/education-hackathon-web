@@ -129,7 +129,7 @@ export default function Header() {
             :
             <div>
               <div className={classes.profile}>
-                <Avatar>{truncate(user?.profile_attributes?.first_name)}</Avatar>
+                <Avatar className="text-capitalize">{truncate(user?.profile_attributes?.first_name)}</Avatar>
                 <Link to="/login" onClick={handleClick} style={{textDecoration: 'none'}}
                       className="head-link hand-cursor  text-capitalize">
                   <Typography

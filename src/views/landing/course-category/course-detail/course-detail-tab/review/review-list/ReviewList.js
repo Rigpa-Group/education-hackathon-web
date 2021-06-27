@@ -22,9 +22,11 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 10
   },
   avatarReview: {
+    textTransform: 'capitalize',
     fontSize: 30
   },
   reviewName: {
+    textTransform: 'capitalize',
     fontSize: 18,
     fontWeight: 700,
     paddingLeft: 10

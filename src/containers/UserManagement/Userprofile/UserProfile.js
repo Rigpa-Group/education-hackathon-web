@@ -109,10 +109,6 @@ export const UserProfile = () => {
         </Paper>
       </Grid>
       <EditProfile handleClose={handleClose} open={open} editUser={profile}/>
-      <Grid item lg={7} xs={12}>
-        <Typography style={{fontWeight: 700, textAlign: 'center', marginBottom: 10}}>Courses Created</Typography>
-        <UserCoursesAdded/>
-      </Grid>
     </Grid>
   );
 };

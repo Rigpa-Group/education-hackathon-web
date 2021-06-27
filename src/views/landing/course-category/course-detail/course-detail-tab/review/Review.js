@@ -1,12 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
 import {Rating} from '@material-ui/lab';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import ReviewList from './review-list/ReviewList';
-import {reviewCoursesApi} from '../../../../../../services/CourseServices';
-import {Notify} from '../../../../../../shared/components/notification/Notification';
 
 const BorderLinearProgress = withStyles((theme) => ({
   root: {

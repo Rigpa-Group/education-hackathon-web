@@ -48,6 +48,7 @@ export default function CourseDetail({index}) {
   const [fetch, setFetch] = useState(true);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(2);
+  const [review, setReview] = useState(false);
 
   useEffect(() => {
     setProps(snackbar);
@@ -102,9 +103,12 @@ export default function CourseDetail({index}) {
     const statusValue = {status: value, course_id: [course?.id]};
     participantsApi('post', course?.id, unit?.id, {participant: statusValue}).then(res => {
     });
-    setTimeout(() => {
-      setOpen(true);
-    }, 20000);
+    if (!review) {
+      setTimeout(() => {
+        setReview(true);
+        setOpen(true);
+      }, 20000);
+    }
   };
 
   return (

@@ -12,6 +12,9 @@ export default function Banner() {
                className="imageBanner"
           />
         </div>
+        <div>
+          <img src={require('../../../assets/images/tech-image.png').default} alt="" className="img-side"/>
+        </div>
         <div className="textInspiration">
           <Typography className="explore">
             Explore,

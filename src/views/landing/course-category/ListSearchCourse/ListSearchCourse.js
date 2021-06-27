@@ -117,7 +117,7 @@ export default function ListSearchCourse() {
             </Card>
           </Grid>
         )) : (open && courses.length === 0) ?
-          <div className="bg-img" style={{marginLeft: 300}}/> :
+          <img src={require('../../../../assets/images/noData.png').default} className="bg-img" alt="img"/> :
           <Grid container spacing={3}>
             {[1, 2, 3, 4].map(val => (
               <Grid item lg={3} xs={6} className="mt-4" key={val}>

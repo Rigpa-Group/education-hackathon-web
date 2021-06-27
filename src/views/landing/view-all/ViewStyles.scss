@@ -1,9 +1,7 @@
 @import '~video-react/styles/scss/video-react';
 
 .bg-img {
-  background-image: url('../../../assets/images/noData.png');
-  background-repeat: no-repeat;
-  background-size: contain;
   width: 600px;
   height: 500px;
+  margin-left: 300px;
 }

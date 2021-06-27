@@ -23,7 +23,7 @@ export default function Banner() {
             Teach,
           </Typography>
           <Typography className='skills'>
-            Lear Skills
+            Learn Skills
           </Typography>
         </div>
       </div>

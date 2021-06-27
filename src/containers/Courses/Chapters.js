@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import {TextField} from 'formik-material-ui';
 import {Accordion, AccordionDetails, makeStyles, Typography} from '@material-ui/core';
@@ -6,7 +6,7 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Button from '@material-ui/core/Button';
 import {SharedImageUpload} from '../../shared/ImageUpload/ImageUpload';
 import {Field, FieldArray, useFormikContext} from 'formik';
-import {addCourses} from './CourseModel';
+import {addCourses, removeCourses} from './CourseModel';
 import {SingleImageUpload} from '../../shared/ImageUpload/SingleImageUpload';
 
 const useStyles = makeStyles(theme => ({
@@ -49,6 +49,10 @@ export const CourseChapter = () => {
               {values?.course_units_attributes?.map((course, index) => (
                 <Grid lg={4} md={4} xs={12}>
                   <Accordion square expanded={true} key={index}>
+                    {index > 0 &&
+                    <Grid item lg={12} md={12} xs={12} className="ml-2">
+                      <Button variant="contained" color="secondary" onClick={() => removeCourses(arrayHelpers, index)}>Remove</Button>
+                    </Grid>}
                     <AccordionDetails>
                       <Grid container spacing={2}>
                         <Grid item lg={12} xs={12}>
@@ -69,9 +73,6 @@ export const CourseChapter = () => {
                         <Grid item lg={12} xs={12}>
                           <SharedImageUpload courseIndex={index}/>
                         </Grid>
-                        {/*<Grid item lg={12} xs={12} align="right">
-                          <Button className={classes.addMore}>Add More</Button>
-                        </Grid>*/}
                       </Grid>
                     </AccordionDetails>
                   </Accordion>

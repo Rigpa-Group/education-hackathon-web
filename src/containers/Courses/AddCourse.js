@@ -48,7 +48,11 @@ export const AddCourse = () => {
 
   useEffect(() => {
     setProps(snackbar);
-    fetchCourse();
+    if (edit) {
+      fetchCourse();
+    } else {
+      setOpen(true);
+    }
     eduLevelsApi('get').then(response => setEduLevels(response.education_levels));
     courseCategoryApi('get').then(response => setCategories(response.course_categories));
   }, []);
@@ -70,9 +74,9 @@ export const AddCourse = () => {
     });
   };
 
-  const courseUpdate= (values, {setSubmitting}) => {
+  const courseUpdate = (values, {setSubmitting}) => {
     const formData = o2f({...values}, {indices: false, nullsAsUndefineds: true}, null, `course`);
-    courseApi('put',params?.id, formData).then(response => {
+    courseApi('put', params?.id, formData).then(response => {
       history.push('/course/list');
       Notify('File updated successfully', 'success');
       setSubmitting(false);
@@ -98,7 +102,7 @@ export const AddCourse = () => {
     <React.Fragment>
       {open &&
       <div>
-        <Formik initialValues={edit? course : initialCourse} onSubmit={edit? courseUpdate : courseUpload}>
+        <Formik initialValues={edit ? course : initialCourse} onSubmit={edit ? courseUpdate : courseUpload}>
           {({
               isSubmitting,
               handleChange,
@@ -153,7 +157,7 @@ export const AddCourse = () => {
                   <CourseChapter/>
                 </Grid>
                 <Grid item lg={4} md={4} xs={12} className="pull-right">
-                  <Button className="pull-right" variant="contained" style={{width: 100}}
+                  <Button className="pull-right" disabled={isSubmitting} variant="contained" style={{width: 100}}
                           type="submit" color="primary">Save</Button>
                 </Grid>
               </Card>

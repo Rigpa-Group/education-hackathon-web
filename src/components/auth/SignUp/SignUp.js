@@ -29,7 +29,7 @@ export default function SignUp() {
     phone: '',
     profile_attributes: {first_name: '', last_name: '', gender: ''},
     password: '',
-    role_ids: [isTutor ? 1 : 2]
+    role_ids: [isTutor ? 2 : 3]
   };
 
   const onSignUp = (values, {setSubmitting}) => {
@@ -122,7 +122,8 @@ export default function SignUp() {
                            </InputAdornment>,
                          }}
                          style={{marginTop: 10}}/>
-                  <Button variant="contained" color={'primary'} className="signup-btn" type="submit">
+                  <Button variant="contained" disabled={isSubmitting} color={'primary'} className="signup-btn"
+                          type="submit">
                     SignUp
                   </Button>
                 </Form>

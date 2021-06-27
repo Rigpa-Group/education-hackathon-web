@@ -10,6 +10,10 @@ export const addCourses = (arrayFilters, index) => {
   });
 };
 
+export const removeCourses = (arrayFilters, index) => {
+  arrayFilters.remove(index);
+};
+
 export const initialCourse = {
   name: '', description: '', education_level_id: '', course_category_id: '',
   course_units_attributes: [

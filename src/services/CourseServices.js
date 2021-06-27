@@ -50,3 +50,10 @@ export const reviewCoursesApi = (method, id, payload = null, params = null) => {
     return response.data;
   });
 };
+
+/*Participants api*/
+export const participantsApi = (method, id, uid, payload = null, params = null) => {
+  return baseApi(`/courses/${id}/course_units/${uid}/participants`, method, params, payload).then(response => {
+    return response.data;
+  });
+};

@@ -8,7 +8,7 @@ import CourseDetailTab from './course-detail-tab/CourseDetailTab';
 import CourseVideoAccordian from './course-detail-tab/course-video-list/CourseVideoList';
 import {Player} from 'video-react';
 import {useHistory, useParams} from 'react-router-dom';
-import {courseAction, reviewCoursesApi} from '../../../../services/CourseServices';
+import {courseAction, participantsApi, reviewCoursesApi} from '../../../../services/CourseServices';
 import {useSnackbar} from 'notistack';
 import {Notify, setProps} from '../../../../shared/components/notification/Notification';
 import RenderAuthorized from '../../../../routes/RenderAuthorized';
@@ -46,7 +46,7 @@ export default function CourseDetail({index}) {
   const [video, setVideo] = useState({});
   const [unit, setUnit] = useState({});
   const [fetch, setFetch] = useState(true);
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(2);
 
   useEffect(() => {
@@ -78,25 +78,40 @@ export default function CourseDetail({index}) {
   const onHandleReview = () => {
     const reviewData = {comment: comment, star: value};
     reviewCoursesApi('post', course?.id, {review: {...reviewData}}).then(response => {
+      const statusValue = {status: 'completed', course_id: [course?.id]};
+      participantsApi('post', course?.id, unit?.id, {participant: statusValue}).then(res => {
+      });
       Notify('Thank you for your review', 'success');
+      setComment('');
+      setValue(2);
+      setOpen(false);
       fetchCourse();
     }).catch(err => Notify(err, 'error'));
   };
 
   const handleStatus = (value) => {
     courseAction('put', params?.id, {course: {status: value}}).then(res => {
-      history.push('/course/list')
+      history.push('/course/list');
       Notify('Course status Updated Successfully', 'success');
     }).catch(error => {
       Notify(error, 'error');
     });
   };
 
+  const handleVideo = (value) => {
+    const statusValue = {status: value, course_id: [course?.id]};
+    participantsApi('post', course?.id, unit?.id, {participant: statusValue}).then(res => {
+    });
+    setTimeout(() => {
+      setOpen(true);
+    }, 20000);
+  };
+
   return (
     <Container>
       <Grid container spacing={2}>
         <Grid item lg={8}>
-          <div style={{marginBottom: 20, marginTop: 20}}>
+          <div style={{marginBottom: 20, marginTop: 20}} onClick={() => handleVideo('ongoing')}>
             <Player className={classes.media} poster={unit?.photo?.large || `/assets/images/categoryImg.png`}
                     src={video?.clip_url ?? `https://media.w3.org/2010/05/sintel/trailer_hd.mp4`}
                     playsInline/>
@@ -142,37 +157,40 @@ export default function CourseDetail({index}) {
           </Card>
         </Grid>
       </Grid>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogContent style={{width: 400}} align="center">
-          <Typography style={{color: '#03A2A5', fontSize: 21, marginBottom: 10}}>Rate this course</Typography>
-          <Rating
-            name="simple-controlled"
-            value={value}
-            onChange={(event, newValue) => {
-              setValue(newValue);
-            }}
-          />
-          <Typography style={{color: '#03A2A5', fontSize: 21, marginBottom: 10, marginTop: 20}}>Review this
-            course</Typography>
-          <TextField variant="outlined" label="Review" placeholder="Write your review" multiline={true} rows={3}
-                     fullWidth onChange={(e) => setComment(e?.target?.value)}/>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={onHandleReview} color="primary">
-            Done
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <RenderAuthorized authorized={['Learner']}>
+        <Dialog
+          open={open}
+          disableBackdropClick
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogContent style={{width: 400}} align="center">
+            <Typography style={{color: '#03A2A5', fontSize: 21, marginBottom: 10}}>Rate this course</Typography>
+            <Rating
+              name="simple-controlled"
+              value={value}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+              }}
+            />
+            <Typography style={{color: '#03A2A5', fontSize: 21, marginBottom: 10, marginTop: 20}}>Review this
+              course</Typography>
+            <TextField variant="outlined" label="Review" placeholder="Write your review" multiline={true} rows={3}
+                       fullWidth onChange={(e) => setComment(e?.target?.value)}/>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="secondary">
+              Cancel
+            </Button>
+            <Button onClick={onHandleReview} color="primary">
+              Done
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </RenderAuthorized>
     </Container>
   );
 }
